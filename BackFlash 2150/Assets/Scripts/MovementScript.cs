@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovementScript : MonoBehaviour {
+public class MovementScript : MonoBehaviour
+{
 
-        /* State Bools*/
+    /* State Bools*/
     bool runningOn;
     bool crouchOn;
     bool crouchToggle;
     public bool inJump;
+    public bool midAir;
 
     public float runningSpeed;
     public float rollingSpeed;
@@ -20,18 +22,20 @@ public class MovementScript : MonoBehaviour {
     public float jumpDelay;
     public float jumpDuration;
 
-        /* Movement Speed */
+    /* Movement Speed */
     public float walkSpeed;
+    public float walkTurnDelay;
     public float runSpeed;
+    public float runTurnDelay;
     public float runTime;
     public float rJumpRunUp;
 
-        /* Jump Heights */
+    /* Jump Heights */
     public float sJumpHeight;
     public float rJumpHeight;
     public float lJumpHeight;
 
-        /* Jump Propulsion */
+    /* Jump Propulsion */
     public float rJumpPropulsion;
     public float rJumpDirection;
     public float rJumpSpeed = 10;
@@ -54,36 +58,50 @@ public class MovementScript : MonoBehaviour {
     public bool lookLeft;
     public Animator lookingAnimation;
 
+    public float lookTime;
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         runningOn = false;
         crouchOn = false;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
-            /* Look Direction */
-        if (Input.GetKeyDown(KeyCode.A))
+        /* Look Direction */
+        if (midAir == false)
         {
-            lookLeft = true;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            lookLeft = false;
+            if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.D))
+            {
+            }
+
+            else
+            {
+                if (Input.GetKey(KeyCode.A))
+                {
+                    lookLeft = true;
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    lookLeft = false;
+                }
+            }
         }
 
-        if (lookLeft == true)
-        {
-            lookingAnimation.SetBool("left?", true);
-        } 
-        else
-        {
-            lookingAnimation.SetBool("left?", false);
-        }
+        /* Looking Animation*/
+            if (lookLeft == true)
+            {
+                lookingAnimation.SetBool("left?", true);
+            }
+            else
+            {
+                lookingAnimation.SetBool("left?", false);
+            }
 
-            /* Run Button */
+
+        /* Run Button */
         if (Input.GetKey(KeyCode.LeftShift))
         {
             runningOn = true;
@@ -93,13 +111,22 @@ public class MovementScript : MonoBehaviour {
             runningOn = false;
         }
 
-            /* Crouch Button*/
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            crouchOn =! crouchOn;
-        }
 
-            /* Crouch/Standing Scales */
+        /* Crouch Functions */
+        /* Crouch Button*/
+        if (rollingLeft == false && rollingRight == false)
+        {
+            if (midAir == false)
+            {
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    crouchOn = !crouchOn;
+                }
+            }
+        }
+        
+
+        /* Crouch/Standing Scales */
         if (crouchOn == true)
         {
             transform.localScale = new Vector3(1.1f, 1f, 1.1f);
@@ -109,7 +136,7 @@ public class MovementScript : MonoBehaviour {
                 transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                 crouchToggle = true;
             }
-            
+            // crouchToggle controls position of player when it scales
         }
         else
         {
@@ -119,49 +146,54 @@ public class MovementScript : MonoBehaviour {
                 transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
                 crouchToggle = false;
             }
+            // crouchToggle controls position of player when it scales
         }
 
-            /* Jump button */
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space))
+
+        /* Jump Mechanics*/
+        /* Stationary Jump */
+        if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) || (Input.GetKeyUp(KeyCode.A) && Input.GetKeyUp(KeyCode.D)))
         {
-            inJump = true;
+            rJumpDirection = 0;
         }
 
-        //else
-        //{
-        //    inJump = false;
-        //}
-
-            /* Running Jump Direction */
-            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) || (Input.GetKeyUp(KeyCode.A) && Input.GetKeyUp(KeyCode.D)))
+        /* Running Jump Direction */
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.A))
             {
-                rJumpDirection = 0;
+                rJumpDirection = -rJumpPropulsion;
             }
-
-            else
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    rJumpDirection = -rJumpPropulsion;
-                }
-
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    rJumpDirection = rJumpPropulsion;
-                }
+                rJumpDirection = rJumpPropulsion;
             }
+        }
+        // Values set in Inspector
 
-            /* Leap Jump Direction */
-            if (lookLeft == true)
+        /* Jump button */
+        if (midAir == false)
+        {
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
+            {
+                inJump = true;
+            }
+        }
+
+
+        /* Leap Jump Direction */
+        if (lookLeft == true)
         {
             lJumpDirection = -lJumpPropulsion;
         }
-            else
+        else
         {
             lJumpDirection = lJumpPropulsion;
         }
+        // Values set in Inspector
 
-            /* Roll direction */
+        /* Rolling Mechanics */
+        /* Roll direction */
         if (timeRolling > rollDelay)
         {
             if (crouchOn == true)
@@ -180,80 +212,103 @@ public class MovementScript : MonoBehaviour {
 
             }
         }
-
         timeRolling += Time.deltaTime;
 
-            /* Rolling movement */
+        /* Rolling movement */
         if (rollingRight == true)
         {
             if (timeRolling < rollDuration)
             {
-                transform.Translate(Vector3.right * Time.deltaTime * rollingSpeed);
+                //transform.Translate(Vector3.right * Time.deltaTime * rollingSpeed);
+                rb.AddForce(Vector3.right * rollingSpeed);
             }
-
             if (timeRolling > rollDelay)
             {
                 rollingRight = false;
             }
         }
-
         if (rollingLeft == true)
         {
             if (timeRolling < rollDuration)
             {
-                transform.Translate(Vector3.left * Time.deltaTime * rollingSpeed);
+                //transform.Translate(Vector3.left * Time.deltaTime * rollingSpeed);
+                rb.AddForce(Vector3.left * rollingSpeed);
             }
-
             if (timeRolling > rollDelay)
             {
                 rollingLeft = false;
             }
         }
 
-            /* Walking and Running Functions */
-        if (crouchOn == false && inJump == false)
+        /* Walking, Running and Crouch Mechanics */
+        if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true)
         {
+            if ((Input.GetKeyUp(KeyCode.D) || (Input.GetKeyUp(KeyCode.A))))
+            {
+                runTime = 0;
+            }
+            // Resets running timer for when a player decides to walk after a run.
+
+            /* Running */
             if (runningOn == true)
             {
-                if (Input.GetKey(KeyCode.D))
-                {
-                    transform.Translate(Vector3.right * Time.deltaTime * runningSpeed);
-                }
+                lookTime += Time.deltaTime;
 
-                if (Input.GetKey(KeyCode.A))
+                if (lookTime > runTurnDelay)
                 {
-                    transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
-                }
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        transform.Translate(Vector3.right * Time.deltaTime * runningSpeed);
+                        runTime += Time.deltaTime;
+                    }
 
-                if ((Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A))))
-                {
-                    runTime += Time.deltaTime;
-                }
-                
-                else
-                {
-                    runTime = 0;
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
+                        runTime += Time.deltaTime;
+                    }
+
+                    if ((Input.GetKeyDown(KeyCode.D) || (Input.GetKeyDown(KeyCode.A))))
+                    {
+                        lookTime = 0;
+                    }
                 }
             }
+            // Manages running speed, direction and delay before running
+            // Also manages whenever player lifts fingers off movement keys to determinte runup for running jump.
 
+            /* Walking */
             else
             {
-                if (Input.GetKey(KeyCode.D))
+                lookTime += Time.deltaTime;
+                if (lookTime > walkTurnDelay)
                 {
-                    //transform.Translate(Vector3.right * Time.deltaTime);
-                    rb.AddForce(Vector3.right * walkSpeed);
-                }
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        transform.Translate(Vector3.left * Time.deltaTime);
+                        //rb.AddForce(Vector3.left * walkSpeed);
+                    }
 
-                if (Input.GetKey(KeyCode.A))
-                {
-                    //transform.Translate(Vector3.left * Time.deltaTime);
-                    rb.AddForce(Vector3.left * walkSpeed);
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        transform.Translate(Vector3.right * Time.deltaTime);
+                        //rb.AddForce(Vector3.right * walkSpeed);
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+                    {
+                        lookTime = 0;
+                    }
                 }
             }
+            // Manages running speed, direction and delay before running
+
+
+            /* Jump Mechanic Limits */
+            // Add "|| gunMode == true" for when gunMode is implemented!
+
         }
 
-            /* If crouch is on, jumping features are disabled */
-            // Add "|| gunMode == true" for when gunMode is implemented!
         if (crouchOn == true)
         {
 
@@ -264,27 +319,27 @@ public class MovementScript : MonoBehaviour {
             if (inJump == true)
             {
                 airTime += Time.deltaTime;
-
-                    /* Stationary Jump */
+                /* Stationary Jump */
                 if (runningOn == false)
                 {
                     if (airTime < jumpDuration)
                     {
                         rb.AddForce(new Vector3(0, sJumpHeight) * sJumpSpeed);
                     }
-                    //  Dictates how long the transform lasts for the jump.
+                    //Dictates how long the transform lasts for the jump.
 
                     else
                     {
-                        if (airTime > jumpDelay)
-                        {
+                        //if (airTime > jumpDelay)
+                        //{
                             airTime = 0;
                             inJump = false;
-                        }
+                        //}
                     }
-                    //  Acts as cooldown for after the jump.
+                    //Acts as cooldown for after the jump.
                 }
-                    /* Running Jump Test */
+
+                /* Running Jump Test */
                 else
                 {
                     if (airTime < jumpDuration)
@@ -301,41 +356,49 @@ public class MovementScript : MonoBehaviour {
 
                     else
                     {
-                        if (airTime > jumpDelay)
-                        {
-                            airTime = 0;
-                            inJump = false;
-                        }
+                        airTime = 0;
+                        inJump = false;
                     }
                 }
             }
-        }    
-
-            //if (airTime > 1)
-            //{
-            //    if (inJump == true)
-            //    {
-            //        if (airTime < jumpDelay)
-            //        {
-            //            if (runningOn == true)
-            //            {
-            //                transform.Translate(0, rJumpHeight, 0);
-            //                airTime = 0;
-            //            }
-
-            //            else
-            //            {
-            //                transform.Translate(0, 0.2f, 0);
-            //                rb.AddForce(Vector3.up, ForceMode.Impulse);
-            //                //rb.AddForce(new Vector3(0, sJumpHeight, 0), ForceMode.Force);
-            //                airTime = 0;
-            //            }
-            //        }
-            //        else
-            //        {
-            //            inJump = false;
-            //        }
-            //    }
-            //}
         }
+
     }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        midAir = false;
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        midAir = true;
+    }
+}
+
+//if (airTime > 1)
+//{
+//    if (inJump == true)
+//    {
+//        if (airTime < jumpDelay)
+//        {
+//            if (runningOn == true)
+//            {
+//                transform.Translate(0, rJumpHeight, 0);
+//                airTime = 0;
+//            }
+
+//            else
+//            {
+//                transform.Translate(0, 0.2f, 0);
+//                rb.AddForce(Vector3.up, ForceMode.Impulse);
+//                //rb.AddForce(new Vector3(0, sJumpHeight, 0), ForceMode.Force);
+//                airTime = 0;
+//            }
+//        }
+//        else
+//        {
+//            inJump = false;
+//        }
+//    }
+//}
