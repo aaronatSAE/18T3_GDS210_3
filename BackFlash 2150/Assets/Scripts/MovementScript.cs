@@ -4,24 +4,28 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
+        [Space(10)]
+    public float timeRolling;
+    public float airTime;
+    public float jumpDelay;
+    public float jumpDuration;
+
     [Header("State Bools")]
     bool runningOn;
     bool crouchOn;
     bool crouchToggle;
+    public bool gunMode;
     public bool inJump;
     public bool midAir;
     public bool ledgeCollided;
     public bool ledgeHang;
 
-    [Space(10)]
+    [Header("Rolling Values")]
     public float rollingSpeed;
     public float rollDistance;
-    public float timeRolling;
     public float rollDelay;
     public float rollDuration;
-    public float airTime;
-    public float jumpDelay;
-    public float jumpDuration;
+    public float crouchTurnDelay;
 
     [Header("Walk/Run Values")]
     public float walkSpeed;
@@ -120,6 +124,15 @@ public class MovementScript : MonoBehaviour
             GetComponent<Rigidbody>().isKinematic = false;
         }
 
+        if (rb.velocity.x == 0 && rb.velocity.y == 0 && rb.velocity.z == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                gunMode = !gunMode;
+            }
+        }
+
+
         if (ledgeHang == true)
         {
 
@@ -149,6 +162,15 @@ public class MovementScript : MonoBehaviour
                     ledgeHang = false;
                     ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbRight");
                 }
+                climbing = true;
+
+                if (lookLeft == true)
+                {
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    ledgeCollided = false;
+                    ledgeHang = false;
+                    ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbLeft");
+                }
             }
 
             if (climbTimer >= 0.785f)
@@ -177,6 +199,9 @@ public class MovementScript : MonoBehaviour
             /* Look Direction */
             if (midAir == false)
             {
+                climbing = false;
+                climbTimer = 0;
+
                 if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.D))
                 {
                 }
@@ -233,6 +258,7 @@ public class MovementScript : MonoBehaviour
             /* Crouch/Standing Scales */
             if (crouchOn == true)
             {
+                lookTime += Time.deltaTime;
                 transform.localScale = new Vector3(1.1f, 1f, 1.1f);
 
                 if (crouchToggle == false)
@@ -302,20 +328,46 @@ public class MovementScript : MonoBehaviour
             {
                 if (crouchOn == true)
                 {
-                    if (Input.GetKeyDown(KeyCode.D))
-                    {
-                        timeRolling = 0;
-                        rollingRight = true;
-                    }
+                        if (lookLeft == true)
+                        {
+                            if (Input.GetKeyDown(KeyCode.D))
+                            {
+                                lookTime = 0;
+                            }
 
-                    if (Input.GetKeyDown(KeyCode.A))
-                    {
-                        timeRolling = 0;
-                        rollingLeft = true;
-                    }
+                            else if (Input.GetKeyDown(KeyCode.A))
+                            {
+                                if (lookTime > crouchTurnDelay)
+                                {
+                                    timeRolling = 0;
+                                    rollingLeft = true;
+                                }
+                            }
+                        }
 
+                        if (lookLeft == false)
+                        {
+                            if (Input.GetKeyDown(KeyCode.A))
+                            {
+                                lookTime = 0;
+                            }
+                            else if (Input.GetKeyDown(KeyCode.D))
+                            {
+                                if (lookTime > crouchTurnDelay)
+                                {
+                                    timeRolling = 0;
+                                    rollingRight = true;
+                                }
+                            }
+                        }
                 }
             }
+
+            if (rollingLeft == true || rollingRight == true)
+            {
+                lookTime = 0;
+            }
+
             timeRolling += Time.deltaTime;
 
             /* Rolling movement */
@@ -324,7 +376,9 @@ public class MovementScript : MonoBehaviour
                 if (timeRolling < rollDuration)
                 {
                     //transform.Translate(Vector3.right * Time.deltaTime * rollingSpeed);
-                    rb.AddForce(Vector3.right * rollingSpeed);
+                    //rb.AddForce(Vector3.right * rollingSpeed);
+                    rb.velocity = Vector3.right * rollingSpeed;
+
                 }
                 if (timeRolling > rollDelay)
                 {
@@ -336,7 +390,8 @@ public class MovementScript : MonoBehaviour
                 if (timeRolling < rollDuration)
                 {
                     //transform.Translate(Vector3.left * Time.deltaTime * rollingSpeed);
-                    rb.AddForce(Vector3.left * rollingSpeed);
+                    //rb.AddForce(Vector3.left * rollingSpeed);
+                    rb.velocity = Vector3.left * rollingSpeed;
                 }
                 if (timeRolling > rollDelay)
                 {
@@ -354,39 +409,50 @@ public class MovementScript : MonoBehaviour
                 // Resets running timer for when a player decides to walk after a run.
 
                 /* Running */
-                if (runningOn == true)
+                if (gunMode == false)
                 {
-                    lookTime += Time.deltaTime;
-
-                    if (lookTime > runTurnDelay)
+                    if (runningOn == true)
                     {
-                        if (Input.GetKey(KeyCode.D))
-                        {
-                            transform.Translate(Vector3.right * Time.deltaTime * runningSpeed);
-                            rb.velocity = new Vector3(2f, -2f, 0);
-                            runTime += Time.deltaTime;
-                        }
+                        lookTime += Time.deltaTime;
 
-                        if (Input.GetKey(KeyCode.A))
+                        if (lookTime > runTurnDelay)
                         {
-                            transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
-                            rb.velocity = new Vector3(-2f, -2f, 0);
-                            runTime += Time.deltaTime;
-                        }
+                            if (Input.GetKey(KeyCode.D))
+                            {
+                                transform.Translate(Vector3.right * Time.deltaTime * runningSpeed);
+                                rb.velocity = new Vector3(2f, -2f, 0);
+                                runTime += Time.deltaTime;
+                            }
 
-                        if ((Input.GetKeyDown(KeyCode.D) || (Input.GetKeyDown(KeyCode.A))))
-                        {
-                            lookTime = 0;
+                            if (Input.GetKey(KeyCode.A))
+                            {
+                                transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
+                                rb.velocity = new Vector3(-2f, -2f, 0);
+                                runTime += Time.deltaTime;
+                            }
+
+                            if ((Input.GetKeyDown(KeyCode.D) || (Input.GetKeyDown(KeyCode.A))))
+                            {
+                                lookTime = 0;
+                            }
                         }
                     }
                 }
-                // Manages running speed, direction and delay before running
-                // Also manages whenever player lifts fingers off movement keys to determinte runup for running jump.
 
-                /* Walking */
-                else
+                // Above = Running Enabled
+                // Below = Running Disabled
+            }
+            // Manages running speed, direction and delay before running
+            // Also manages whenever player lifts fingers off movement keys to determinte runup for running jump.
+
+
+            /* Walking */
+            if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true)
+            {
+                lookTime += Time.deltaTime;
+
+                if (gunMode == false)
                 {
-                    lookTime += Time.deltaTime;
                     if (lookTime > walkTurnDelay)
                     {
                         if (Input.GetKey(KeyCode.A))
@@ -407,24 +473,53 @@ public class MovementScript : MonoBehaviour
                         }
                     }
                 }
-                // Manages running speed, direction and delay before running
 
+                // Above = Holstered Walk
+                // Below = Gun Walk 
 
-                /* Jump Mechanic Limits */
-                // Add "|| gunMode == true" for when gunMode is implemented!
+                else
+                {
+                    if (lookTime > walkTurnDelay)
+                    {
+                        if (Input.GetKey(KeyCode.A))
+                        {
+                            transform.Translate(Vector3.left * Time.deltaTime);
+                            //rb.AddForce(Vector3.left * walkSpeed);
+                        }
+
+                        if (Input.GetKey(KeyCode.D))
+                        {
+                            transform.Translate(Vector3.right * Time.deltaTime);
+                            //rb.AddForce(Vector3.right * walkSpeed);
+                        }
+
+                        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
+                        {
+                            lookTime = 0;
+                        }
+                    }
+                }
 
             }
+                // Manages running speed, direction and delay before running
+        }
 
-            if (crouchOn == true)
+
+            /* Jump Mechanic Limits */
+            if (crouchOn == true || gunMode == true)
             {
 
             }
+
+            // Above = Jump Disabled
+            // Below = Jump Enabled
 
             else
             {
                 if (inJump == true)
                 {
                     airTime += Time.deltaTime;
+                    
                     /* Stationary Jump */
                     if (runningOn == false)
                     {
@@ -436,7 +531,7 @@ public class MovementScript : MonoBehaviour
                             rb.velocity = new Vector3(0, sJumpHeight, 0);
                             //sJumpHeight value approx. = 5
                         }
-                        //Dictates how long the transform lasts for the jump.
+                        // Dictates the jump height.
 
                         else
                         {
@@ -446,8 +541,10 @@ public class MovementScript : MonoBehaviour
                             inJump = false;
                             //}
                         }
-                        //Acts as cooldown for after the jump.
+                        // Acts as cooldown for after the jump.
+                        // This step may not be neccessary.
                     }
+
 
                     /* Running Jump Test */
                     else
@@ -465,6 +562,10 @@ public class MovementScript : MonoBehaviour
                                 // rJumpDirection value approx. = 
                                 // rJumpHeight value approx. = 
                             }
+
+                            // Above = Running Jump.
+                            // Below = Leap Jump.
+
                             else
                             {
                                 //rb.AddForce(new Vector3(lJumpDirection, lJumpHeight) * lJumpSpeed);
@@ -486,8 +587,10 @@ public class MovementScript : MonoBehaviour
                     }
                 }
             }
-        }
+        
         ledgeCollided = ledgeCollider.GetComponent<LedgeCollision>().collided;
+        // Determines ledge that has been grabbed.
+
 
         Vector3 down = transform.TransformDirection(Vector3.down) * 1.2f;
         Vector3 frontDown = new Vector3(transform.position.x + 0.38f, transform.position.y, transform.position.z);
@@ -498,11 +601,16 @@ public class MovementScript : MonoBehaviour
         Debug.DrawRay(transform.position, down, Color.green);
         Debug.DrawRay(frontDown, down, Color.red);
         Debug.DrawRay(backDown, down, Color.cyan);
+        // Raycasts bottom of player to detect floor.
+
 
         if (rayIntersectsSomething)
         {
             midAir = false;
         }
+        
+        // Above = Floor Detected = On The Ground
+        // Below = Floor Not Detected = In Mid Air
 
         else
         {
@@ -526,7 +634,11 @@ public class MovementScript : MonoBehaviour
         {
             Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), collision.gameObject.GetComponent<Collider>());
         }
-        
+        // Removes Collisions Between Player And Ledge.
+        // Basically, climbing is mimicked through the use of an animator and timers. The ledge that is being grabbed is in itself a physical object with a collider.
+        // This is because the ledge detector on the player is a trigger and requires a collidable source for input.
+        // When ordered, the ledge will animate above the platform for where the ledge is assigned.
+        // As it animates moving back to its default position, the ledge must pass the player that it was carrying, thus the collision ignore.
     }
 
 }
