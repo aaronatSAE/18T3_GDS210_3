@@ -9,12 +9,15 @@ public class MovementScript : MonoBehaviour
     public float airTime;
     public float jumpDelay;
     public float jumpDuration;
+    public GameObject playerNose;
+    public Material noseMaterial;
 
     [Header("State Bools")]
     bool runningOn;
     bool crouchOn;
     bool crouchToggle;
     public bool gunMode;
+    public bool gunAim;
     public bool inJump;
     public bool midAir;
     public bool ledgeCollided;
@@ -26,6 +29,8 @@ public class MovementScript : MonoBehaviour
     public float rollDelay;
     public float rollDuration;
     public float crouchTurnDelay;
+    public float rollFallMomentumX;
+    public float rollFallMomentumY;
 
     [Header("Walk/Run Values")]
     public float walkSpeed;
@@ -34,6 +39,7 @@ public class MovementScript : MonoBehaviour
     public float runTurnDelay;
     public float runTime;
     public float rJumpRunUp;
+    public Vector3 impactSpeed;
 
     [Header("Running Jump Values")]
     public float rJumpHeight;
@@ -51,10 +57,7 @@ public class MovementScript : MonoBehaviour
     public float sJumpHeight;
     float sJumpSpeed;
 
-    [Space(10)]
-    //public Transform target;
-    //public float speed;
-
+    [Header("Ledge Floor Stuff")]
     public Rigidbody rb;
     public GameObject ledgeCollider;
     public GameObject floorCollider;
@@ -62,9 +65,16 @@ public class MovementScript : MonoBehaviour
     public GameObject emptyLedge;
     public bool climbing;
     public float climbTimer;
-
+    public float climbDelay;
     public float ledgeTimer;
     public float ledgeDelay;
+    public GameObject ledgeUnderneath;
+    public float hangTimer;
+    public float hangDelay;
+
+    [Space(10)]
+    //public Transform target;
+    //public float speed;
 
     public bool rollingRight;
     public bool rollingLeft;
@@ -75,6 +85,10 @@ public class MovementScript : MonoBehaviour
 
     public float lookTime;
 
+    public bool debug;
+
+    public bool lookDelay;
+
     Component rbComponent;
 
     // Use this for initialization
@@ -83,6 +97,7 @@ public class MovementScript : MonoBehaviour
         runningOn = false;
         crouchOn = false;
         rbComponent = GetComponent<Rigidbody>();
+        noseMaterial = playerNose.GetComponent<Renderer>().material;
     }
 
     // Update is called once per frame
@@ -128,52 +143,84 @@ public class MovementScript : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                gunMode = !gunMode;
-            }
-        }
-
-
-        if (ledgeHang == true)
-        {
-
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                if (lookLeft == false)
+                if (gunMode == true)
                 {
-                    gameObject.transform.localPosition = new Vector3(-0.7789993f, -1.3f, 0);
+                    gunMode = !gunMode;
+                    gunAim = false;
                 }
                 else
                 {
-                    gameObject.transform.localPosition = new Vector3(0.7789993f, -1.3f, 0);
+                    gunMode = !gunMode;
+                    gunAim = true;
                 }
-                GetComponent<Rigidbody>().isKinematic = false;
-                ledgeCollided = false;
-                ledgeHang = false;
-                rb.velocity = new Vector3(0, -4, 0);
+            }
+        }
+
+        if (gunAim == true)
+        {
+            noseMaterial.color = Color.red;
+        }
+        else if (gunMode == true)
+        {
+            noseMaterial.color = Color.yellow;
+        }
+        else
+        {
+            noseMaterial.color = Color.green;
+        }
+
+        if (ledgeHang == true)
+        {
+            if (hangTimer > hangDelay)
+            {
+                if (Input.GetKeyDown(KeyCode.S))
+                {
+                    if (lookLeft == false)
+                    {
+                        hangTimer = 0;
+                        gameObject.transform.localPosition = new Vector3(-0.7789993f, -1.3f, 0);
+                    }
+                    else
+                    {   
+                        hangTimer = 0;
+                        gameObject.transform.localPosition = new Vector3(0.7789993f, -1.3f, 0);
+                    }
+
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    ledgeCollided = false;
+                    ledgeHang = false;
+                    rb.velocity = new Vector3(0, -4, 0);
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.W))
             {
-                climbing = true;
-                if (lookLeft == false)
+                if (hangTimer > climbDelay)
                 {
-                    GetComponent<Rigidbody>().isKinematic = false;
-                    ledgeCollided = false;
-                    ledgeHang = false;
-                    ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbRight");
-                }
-                climbing = true;
+                    climbing = true;
+                    if (lookLeft == false)
+                    {
+                        ledgeTimer = 0;
+                        hangTimer = 0;
+                        GetComponent<Rigidbody>().isKinematic = false;
+                        ledgeCollided = false;
+                        ledgeHang = false;
+                        ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbRight");
+                    }
 
-                if (lookLeft == true)
-                {
-                    GetComponent<Rigidbody>().isKinematic = false;
-                    ledgeCollided = false;
-                    ledgeHang = false;
-                    ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbLeft");
+                    if (lookLeft == true)
+                    {
+                        ledgeTimer = 0;
+                        hangTimer = 0;
+                        GetComponent<Rigidbody>().isKinematic = false;
+                        ledgeCollided = false;
+                        ledgeHang = false;
+                        ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbLeft");
+                    }
                 }
             }
 
-            if (climbTimer >= 0.785f)
+            if (climbTimer >= climbDelay)
             {
                 gameObject.transform.parent = emptyLedge.transform;
             }
@@ -304,7 +351,7 @@ public class MovementScript : MonoBehaviour
             /* Jump button */
             if (midAir == false)
             {
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
+                if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && crouchOn == false)
                 {
                     inJump = true;
                 }
@@ -326,8 +373,10 @@ public class MovementScript : MonoBehaviour
             /* Roll direction */
             if (timeRolling > rollDelay)
             {
-                if (crouchOn == true)
+                if (debug == false)
                 {
+                    if (crouchOn == true)
+                    {
                         if (lookLeft == true)
                         {
                             if (Input.GetKeyDown(KeyCode.D))
@@ -351,6 +400,7 @@ public class MovementScript : MonoBehaviour
                             {
                                 lookTime = 0;
                             }
+
                             else if (Input.GetKeyDown(KeyCode.D))
                             {
                                 if (lookTime > crouchTurnDelay)
@@ -360,7 +410,51 @@ public class MovementScript : MonoBehaviour
                                 }
                             }
                         }
+                    }
                 }
+
+                if (debug == true)
+                {
+                    if (crouchOn == true)
+                    {
+                        if (lookLeft == true)
+                        {
+                            if (Input.GetKeyDown(KeyCode.D))
+                            {
+                                lookTime = 0;
+                                lookDelay = false;
+                            }
+
+                            else if (Input.GetKeyDown(KeyCode.A))
+                            {
+                                if (lookTime > crouchTurnDelay)
+                                {
+                                    timeRolling = 0;
+                                    rollingLeft = true;
+                                }
+                            }
+                        }
+
+                        if (lookLeft == false)
+                        {
+                            if (Input.GetKeyDown(KeyCode.A))
+                            {
+                                lookTime = 0;
+                                lookDelay = false;
+                            }
+
+                            else if (Input.GetKeyDown(KeyCode.D))
+                            {
+                                if (lookTime > crouchTurnDelay)
+                                {
+                                    timeRolling = 0;
+                                    rollingRight = true;
+                                }
+                            }
+                        }
+                    }
+                }
+                
             }
 
             if (rollingLeft == true || rollingRight == true)
@@ -373,29 +467,49 @@ public class MovementScript : MonoBehaviour
             /* Rolling movement */
             if (rollingRight == true)
             {
-                if (timeRolling < rollDuration)
+                if (midAir == true)
                 {
-                    //transform.Translate(Vector3.right * Time.deltaTime * rollingSpeed);
-                    //rb.AddForce(Vector3.right * rollingSpeed);
-                    rb.velocity = Vector3.right * rollingSpeed;
-
+                    rb.AddForce(new Vector3(-rollFallMomentumX, -rollFallMomentumY, 0));
                 }
-                if (timeRolling > rollDelay)
+
+                else
                 {
-                    rollingRight = false;
+                    if (timeRolling < rollDuration)
+                    {
+                        //transform.Translate(Vector3.right * Time.deltaTime * rollingSpeed);
+                        //rb.AddForce(Vector3.right * rollingSpeed);
+                        rb.velocity = Vector3.right * rollingSpeed;
+                    }
+
+                    if (timeRolling > rollDelay)
+                    {
+                        rollingRight = false;
+                        rb.velocity = Vector3.zero;
+                    }
                 }
             }
+
             if (rollingLeft == true)
             {
-                if (timeRolling < rollDuration)
+                if (midAir == true)
                 {
-                    //transform.Translate(Vector3.left * Time.deltaTime * rollingSpeed);
-                    //rb.AddForce(Vector3.left * rollingSpeed);
-                    rb.velocity = Vector3.left * rollingSpeed;
+                    rb.AddForce(new Vector3(rollFallMomentumX, -rollFallMomentumY, 0));
                 }
-                if (timeRolling > rollDelay)
+
+                else
                 {
-                    rollingLeft = false;
+                    if (timeRolling < rollDuration)
+                    {
+                        //transform.Translate(Vector3.left * Time.deltaTime * rollingSpeed);
+                        //rb.AddForce(Vector3.left * rollingSpeed);
+                        rb.velocity = Vector3.left * rollingSpeed;
+                    }
+
+                    if (timeRolling > rollDelay)
+                    {
+                        rollingLeft = false;
+                        rb.velocity = Vector3.zero;
+                    }
                 }
             }
 
@@ -447,7 +561,7 @@ public class MovementScript : MonoBehaviour
 
 
             /* Walking */
-            if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true)
+            if ((crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true) && hangTimer > hangDelay)
             {
                 lookTime += Time.deltaTime;
 
@@ -626,19 +740,78 @@ public class MovementScript : MonoBehaviour
         //{
         //    midAir = true;
         //}
+
+        hangTimer += Time.deltaTime;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "LedgeCollider")
         {
+            //ledgeUnderneath = collision.gameObject;
+
             Physics.IgnoreCollision(gameObject.GetComponent<Collider>(), collision.gameObject.GetComponent<Collider>());
+            // Removes Collisions Between Player And Ledge.
+            // Basically, climbing is mimicked through the use of an animator and timers. The ledge that is being grabbed is in itself a physical object with a collider.
+            // This is because the ledge detector on the player is a trigger and requires a collidable source for input.
+            // When ordered, the ledge will animate above the platform for where the ledge is assigned.
+            // As it animates moving back to its default position, the ledge must pass the player that it was carrying, thus the collision ignore.
         }
-        // Removes Collisions Between Player And Ledge.
-        // Basically, climbing is mimicked through the use of an animator and timers. The ledge that is being grabbed is in itself a physical object with a collider.
-        // This is because the ledge detector on the player is a trigger and requires a collidable source for input.
-        // When ordered, the ledge will animate above the platform for where the ledge is assigned.
-        // As it animates moving back to its default position, the ledge must pass the player that it was carrying, thus the collision ignore.
+
+        impactSpeed = collision.relativeVelocity;
+
+        //if (collision.gameObject.tag == "Floors")
+        //{
+        if (impactSpeed.y > 4)
+        {
+            if (gunMode == true)
+            {
+                crouchOn = true;
+            }
+        } 
+        //}
+
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "LedgeFootDetector")
+        {
+            ledgeUnderneath = other.gameObject;
+
+            if (hangTimer > hangDelay)
+            {
+                if (other.gameObject.name == "LFootDetection" && lookLeft == false && Input.GetKeyDown(KeyCode.S))
+                {
+                    //ledgeUnderneath.GetComponent<Animator>().SetTrigger("climbRight");
+                    hangTimer = 0;
+                    ledgeUnderneath.GetComponentInParent<Animator>().SetTrigger("hangRight");
+                }
+                else if (other.gameObject.name == "RFootDetection" && lookLeft == true && Input.GetKeyDown(KeyCode.S))
+                {
+                    //ledgeUnderneath.GetComponent<Animator>().SetTrigger("climbRight");
+                    hangTimer = 0;
+                    ledgeUnderneath.GetComponentInParent<Animator>().SetTrigger("hangLeft");
+                }
+            }
+
+            //if (climbing == false && Input.GetKeyDown(KeyCode.S))
+            //{
+            //    if (other.gameObject.name == "LFootDetection")
+            //    {
+            //        ledgeCo
+            //    }
+
+            //    else if (other.gameObject.name == "RFootDetection")
+            //    {
+
+            //    }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+            ledgeUnderneath = emptyLedge;
     }
 
 }
