@@ -141,6 +141,7 @@ public class MovementScript : MonoBehaviour
 
         if (rb.velocity.x == 0 && rb.velocity.y == 0 && rb.velocity.z == 0)
         {
+            /* Gun Mode/Aim ON/OFF */
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (gunMode == true)
@@ -153,6 +154,19 @@ public class MovementScript : MonoBehaviour
                     gunMode = !gunMode;
                     gunAim = true;
                 }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && gunMode == true)
+            {
+                if (gunAim == false)
+                {
+                    gunAim = true;
+                }
+            }
+
+            if (gunAim == true && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)))
+            {
+                gunAim = false;
             }
         }
 
@@ -349,14 +363,13 @@ public class MovementScript : MonoBehaviour
             // Values set in Inspector
 
             /* Jump button */
-            if (midAir == false)
+            if (midAir == false && gunMode == false)
             {
                 if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && crouchOn == false)
                 {
                     inJump = true;
                 }
             }
-
 
             /* Leap Jump Direction */
             if (lookLeft == true)
@@ -514,7 +527,7 @@ public class MovementScript : MonoBehaviour
             }
 
             /* Walking, Running and Crouch Mechanics */
-            if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true)
+            if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true || gunAim == false)
             {
                 if ( Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift) )
                 {
@@ -709,6 +722,8 @@ public class MovementScript : MonoBehaviour
         Vector3 down = transform.TransformDirection(Vector3.down) * 1.2f;
         Vector3 frontDown = new Vector3(transform.position.x + 0.38f, transform.position.y, transform.position.z);
         Vector3 backDown = new Vector3(transform.position.x - 0.38f, transform.position.y, transform.position.z);
+        Vector3 right = transform.TransformDirection(Vector3.right) * 15f;
+        Vector3 left = transform.TransformDirection(Vector3.left) * 15f;
 
         bool rayIntersectsSomething = Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
 
@@ -716,6 +731,15 @@ public class MovementScript : MonoBehaviour
         Debug.DrawRay(frontDown, down, Color.red);
         Debug.DrawRay(backDown, down, Color.cyan);
         // Raycasts bottom of player to detect floor.
+
+        if (lookLeft == false)
+        {
+            Debug.DrawRay(playerNose.transform.position, right, Color.blue);
+        }
+        if (lookLeft == true)
+        {
+            Debug.DrawRay(playerNose.transform.position, left, Color.green);
+        }
 
 
         if (rayIntersectsSomething)
@@ -762,15 +786,25 @@ public class MovementScript : MonoBehaviour
 
         //if (collision.gameObject.tag == "Floors")
         //{
-        if (impactSpeed.y > 4)
+        if (impactSpeed.y > 0.1)
         {
             if (gunMode == true)
             {
-                crouchOn = true;
+                crouchOn = !crouchOn;
+                gunAim = true;
             }
         } 
-        //}
 
+        //else if (impactSpeed.x == 0)
+        //{
+        //    if (gunMode == true)
+        //    {
+        //        crouchOn = !crouchOn;
+        //    }
+        //}
+        /* Dirty fix for crouched drops not altering stance. Doesn't feel like it's guaranteed to work. */
+
+        //}
     }
 
     private void OnTriggerStay(Collider other)
