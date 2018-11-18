@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MovementScript : MonoBehaviour
 {
-        [Space(10)]
+    [Space(10)]
     public float timeRolling;
     public float airTime;
     public float jumpDelay;
@@ -516,7 +516,7 @@ public class MovementScript : MonoBehaviour
             /* Walking, Running and Crouch Mechanics */
             if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true)
             {
-                if ((Input.GetKeyUp(KeyCode.D) || (Input.GetKeyUp(KeyCode.A))))
+                if ( Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift) )
                 {
                     runTime = 0;
                 }
