@@ -325,9 +325,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1796721179289628}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fb54a09126bc404a8e8bdf2bc4babf6, type: 3}
+  m_Script: {fileID: 11500000, guid: 05b68fe0a653362419f880c7a46ade6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  left: 1
-  LFootDetector: {fileID: 1784068955982716}
-  RFootDetector: {fileID: 1968336295386906}
+  left: 0
+  LFootDetector: {fileID: 0}
+  RFootDetector: {fileID: 0}

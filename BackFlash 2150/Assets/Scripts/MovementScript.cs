@@ -86,6 +86,7 @@ public class MovementScript : MonoBehaviour
     /* Player Look */
     public bool lookLeft;
     public Animator lookingAnimation;
+    public Animator lookSprite;
 
     public float lookTime;
 
@@ -303,10 +304,12 @@ public class MovementScript : MonoBehaviour
             if (lookLeft == true)
             {
                 lookingAnimation.SetBool("left?", true);
+                lookSprite.SetBool("left?", true);
             }
             else
             {
                 lookingAnimation.SetBool("left?", false);
+                lookSprite.SetBool("left?", false);
             }
 
 
@@ -697,7 +700,7 @@ public class MovementScript : MonoBehaviour
                     {
                         if (airTime < jumpDuration)
                         {
-                            if (runTime >   RunUp)
+                            if (runTime >   rJumpRunUp)
                             {
                                 //rb.AddForce(new Vector3(rJumpDirection, rJumpHeight) * rJumpSpeed);
                                 // rJumpDirection value = propulsion -> approx. = 0.075
