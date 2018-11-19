@@ -16,12 +16,16 @@ public class MovementScript : MonoBehaviour
     bool runningOn;
     bool crouchOn;
     bool crouchToggle;
-    public bool gunMode;
-    public bool gunAim;
+    bool gunMode;
+    bool gunAim;
     public bool inJump;
     public bool midAir;
     public bool ledgeCollided;
     public bool ledgeHang;
+
+    [Header("Gun Values")]
+    public float gunTimer;
+    public float gunDelay;
 
     [Header("Rolling Values")]
     public float rollingSpeed;
@@ -139,7 +143,9 @@ public class MovementScript : MonoBehaviour
             GetComponent<Rigidbody>().isKinematic = false;
         }
 
-        if (rb.velocity.x == 0 && rb.velocity.y == 0 && rb.velocity.z == 0)
+        gunTimer += Time.deltaTime;
+
+        if (rb.velocity.x == 0 && rb.velocity.y == 0 && rb.velocity.z == 0 && gunTimer > gunDelay)
         {
             /* Gun Mode/Aim ON/OFF */
             if (Input.GetKeyDown(KeyCode.Tab))
@@ -148,11 +154,15 @@ public class MovementScript : MonoBehaviour
                 {
                     gunMode = !gunMode;
                     gunAim = false;
+                    gunTimer = 0;
+
                 }
                 else
                 {
                     gunMode = !gunMode;
                     gunAim = true;
+                    gunTimer = 0;
+
                 }
             }
 
@@ -161,14 +171,23 @@ public class MovementScript : MonoBehaviour
                 if (gunAim == false)
                 {
                     gunAim = true;
+                    gunTimer = 0;
+
                 }
             }
 
-            if (gunAim == true && (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D)))
+            if (gunAim == true && ((lookLeft == true && Input.GetKey(KeyCode.A) || lookLeft == false && Input.GetKey(KeyCode.D))))
             {
                 gunAim = false;
+                gunTimer = 0;
+            }
+
+            if (gunMode == true && ((lookLeft == false && Input.GetKey(KeyCode.A) || lookLeft == true && Input.GetKey(KeyCode.D))))
+            {
+                gunTimer = 0;
             }
         }
+
 
         if (gunAim == true)
         {
@@ -527,7 +546,7 @@ public class MovementScript : MonoBehaviour
             }
 
             /* Walking, Running and Crouch Mechanics */
-            if (crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true || gunAim == false)
+            if (crouchOn == false && midAir == false && gunAim == false && gunTimer > gunDelay || rollingLeft == true || rollingRight == true)
             {
                 if ( Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift) )
                 {
@@ -574,7 +593,7 @@ public class MovementScript : MonoBehaviour
 
 
             /* Walking */
-            if ((crouchOn == false && midAir == false || rollingLeft == true || rollingRight == true) && hangTimer > hangDelay)
+            if ((crouchOn == false && midAir == false && gunAim == false && gunTimer > gunDelay || rollingLeft == true || rollingRight == true) && hangTimer > hangDelay)
             {
                 lookTime += Time.deltaTime;
 
@@ -666,11 +685,11 @@ public class MovementScript : MonoBehaviour
                             //{
                             airTime = 0;
                             inJump = false;
-                            //}
-                        }
-                        // Acts as cooldown for after the jump.
-                        // This step may not be neccessary.
+                        //}
                     }
+                    // Acts as cooldown for after the jump.
+                    // This step may not be neccessary.
+                }
 
 
                     /* Running Jump Test */
@@ -678,7 +697,7 @@ public class MovementScript : MonoBehaviour
                     {
                         if (airTime < jumpDuration)
                         {
-                            if (runTime > rJumpRunUp)
+                            if (runTime >   RunUp)
                             {
                                 //rb.AddForce(new Vector3(rJumpDirection, rJumpHeight) * rJumpSpeed);
                                 // rJumpDirection value = propulsion -> approx. = 0.075
@@ -791,6 +810,7 @@ public class MovementScript : MonoBehaviour
             if (gunMode == true)
             {
                 crouchOn = !crouchOn;
+                gunTimer = 0;
                 gunAim = true;
             }
         } 
@@ -809,7 +829,7 @@ public class MovementScript : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag == "LedgeFootDetector")
+        if (other.gameObject.tag == "LedgeFootDetector" && gunMode == false)
         {
             ledgeUnderneath = other.gameObject;
 
@@ -840,6 +860,7 @@ public class MovementScript : MonoBehaviour
             //    {
 
             //    }
+
         }
     }
 

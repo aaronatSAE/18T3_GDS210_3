@@ -1334,7 +1334,6 @@ GameObject:
   - component: {fileID: 258278411}
   - component: {fileID: 258278410}
   - component: {fileID: 258278409}
-  - component: {fileID: 258278412}
   - component: {fileID: 258278408}
   - component: {fileID: 258278413}
   m_Layer: 10
@@ -1411,17 +1410,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &258278412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 258278407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa879ed48ad98ae48a80af3f45b566d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &258278413
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1855,7 +1843,6 @@ GameObject:
   - component: {fileID: 351811425}
   - component: {fileID: 351811424}
   - component: {fileID: 351811423}
-  - component: {fileID: 351811422}
   - component: {fileID: 351811427}
   m_Layer: 10
   m_Name: CameraCollision (2)
@@ -1864,17 +1851,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &351811422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 351811421}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa879ed48ad98ae48a80af3f45b566d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &351811423
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2029,7 +2005,6 @@ GameObject:
   - component: {fileID: 356811325}
   - component: {fileID: 356811324}
   - component: {fileID: 356811323}
-  - component: {fileID: 356811327}
   - component: {fileID: 356811328}
   m_Layer: 10
   m_Name: CameraCollision
@@ -2105,17 +2080,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &356811327
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 356811322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa879ed48ad98ae48a80af3f45b566d7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &356811328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5701,11 +5665,6 @@ Prefab:
     - target: {fileID: 4557310713742314, guid: 483878253a26e9e4690b33370f15bf3c, type: 2}
       propertyPath: m_RootOrder
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114045301016745410, guid: 483878253a26e9e4690b33370f15bf3c,
-        type: 2}
-      propertyPath: floorCollider
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 114045301016745410, guid: 483878253a26e9e4690b33370f15bf3c,
         type: 2}

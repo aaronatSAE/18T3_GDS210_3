@@ -339,12 +339,12 @@ MonoBehaviour:
   jumpDuration: 0.2
   playerNose: {fileID: 1096824763075400}
   noseMaterial: {fileID: 0}
-  gunMode: 0
-  gunAim: 0
   inJump: 0
   midAir: 0
   ledgeCollided: 0
   ledgeHang: 0
+  gunTimer: 0
+  gunDelay: 1
   rollingSpeed: 9.25
   rollDistance: 4
   rollDelay: 0.6
