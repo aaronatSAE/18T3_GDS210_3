@@ -1,2 +1,0 @@
-# 18T3_GDS210_3
-18T3 Studio 1 Team 3
