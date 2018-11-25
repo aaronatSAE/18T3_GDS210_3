@@ -304,12 +304,12 @@ public class MovementScript : MonoBehaviour
             if (lookLeft == true)
             {
                 lookingAnimation.SetBool("left?", true);
-                lookSprite.SetBool("left?", true);
+                //lookSprite.SetBool("left?", true);
             }
             else
             {
                 lookingAnimation.SetBool("left?", false);
-                lookSprite.SetBool("left?", false);
+                //lookSprite.SetBool("left?", false);
             }
 
 
