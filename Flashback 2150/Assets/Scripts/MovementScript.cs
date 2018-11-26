@@ -14,7 +14,7 @@ public class MovementScript : MonoBehaviour
 
     [Header("State Bools")]
     bool runningOn;
-    bool crouchOn;
+    public bool crouchOn;
     bool crouchToggle;
     bool gunMode;
     bool gunAim;
@@ -215,7 +215,7 @@ public class MovementScript : MonoBehaviour
                         gameObject.transform.localPosition = new Vector3(-0.7789993f, -1.3f, 0);
                     }
                     else
-                    {   
+                    {
                         hangTimer = 0;
                         gameObject.transform.localPosition = new Vector3(0.7789993f, -1.3f, 0);
                     }
@@ -489,7 +489,7 @@ public class MovementScript : MonoBehaviour
                         }
                     }
                 }
-                
+
             }
 
             if (rollingLeft == true || rollingRight == true)
@@ -551,7 +551,7 @@ public class MovementScript : MonoBehaviour
             /* Walking, Running and Crouch Mechanics */
             if (crouchOn == false && midAir == false && gunAim == false && gunTimer > gunDelay || rollingLeft == true || rollingRight == true)
             {
-                if ( Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift) )
+                if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift))
                 {
                     runTime = 0;
                 }
@@ -650,44 +650,44 @@ public class MovementScript : MonoBehaviour
                 }
 
             }
-                // Manages running speed, direction and delay before running
+            // Manages running speed, direction and delay before running
         }
 
 
-            /* Jump Mechanic Limits */
-            if (crouchOn == true || gunMode == true)
+        /* Jump Mechanic Limits */
+        if (crouchOn == true || gunMode == true)
+        {
+
+        }
+
+        // Above = Jump Disabled
+        // Below = Jump Enabled
+
+        else
+        {
+            if (inJump == true)
             {
+                airTime += Time.deltaTime;
 
-            }
-
-            // Above = Jump Disabled
-            // Below = Jump Enabled
-
-            else
-            {
-                if (inJump == true)
+                /* Stationary Jump */
+                if (runningOn == false)
                 {
-                    airTime += Time.deltaTime;
-                    
-                    /* Stationary Jump */
-                    if (runningOn == false)
+                    if (airTime < jumpDuration)
                     {
-                        if (airTime < jumpDuration)
-                        {
-                            //rb.AddForce(new Vector3(0, sJumpHeight) * sJumpSpeed);
-                            //sJumpHeight value approx. = 0.075
+                        //rb.AddForce(new Vector3(0, sJumpHeight) * sJumpSpeed);
+                        //sJumpHeight value approx. = 0.075
 
-                            rb.velocity = new Vector3(0, sJumpHeight, 0);
-                            //sJumpHeight value approx. = 5
-                        }
-                        // Dictates the jump height.
+                        rb.velocity = new Vector3(0, sJumpHeight, 0);
+                        //sJumpHeight value approx. = 5
+                    }
+                    // Dictates the jump height.
 
-                        else
-                        {
-                            //if (airTime > jumpDelay)
-                            //{
-                            airTime = 0;
-                            inJump = false;
+                    else
+                    {
+                        //if (airTime > jumpDelay)
+                        //{
+                        airTime = 0;
+                        inJump = false;
                         //}
                     }
                     // Acts as cooldown for after the jump.
@@ -695,48 +695,48 @@ public class MovementScript : MonoBehaviour
                 }
 
 
-                    /* Running Jump Test */
-                    else
+                /* Running Jump Test */
+                else
+                {
+                    if (airTime < jumpDuration)
                     {
-                        if (airTime < jumpDuration)
+                        if (runTime > rJumpRunUp)
                         {
-                            if (runTime >   rJumpRunUp)
-                            {
-                                //rb.AddForce(new Vector3(rJumpDirection, rJumpHeight) * rJumpSpeed);
-                                // rJumpDirection value = propulsion -> approx. = 0.075
-                                // rJumpHeigh value approx. = 0.075
+                            //rb.AddForce(new Vector3(rJumpDirection, rJumpHeight) * rJumpSpeed);
+                            // rJumpDirection value = propulsion -> approx. = 0.075
+                            // rJumpHeigh value approx. = 0.075
 
-                                rb.velocity = new Vector3(rJumpDirection, rJumpHeight, 0);
+                            rb.velocity = new Vector3(rJumpDirection, rJumpHeight, 0);
 
-                                // rJumpDirection value approx. = 
-                                // rJumpHeight value approx. = 
-                            }
-
-                            // Above = Running Jump.
-                            // Below = Leap Jump.
-
-                            else
-                            {
-                                //rb.AddForce(new Vector3(lJumpDirection, lJumpHeight) * lJumpSpeed);
-                                // lJumpDirection value approx. = 0.055
-                                // lJumpHeight value approx. = 0.095
-
-                                rb.velocity = new Vector3(lJumpDirection, lJumpHeight, 0);
-                                // lJumpDirection value approx. = 0.055
-                                // lJumpHeight value approx. = 0.095
-                            }
+                            // rJumpDirection value approx. = 
+                            // rJumpHeight value approx. = 
                         }
+
+                        // Above = Running Jump.
+                        // Below = Leap Jump.
 
                         else
                         {
-                            airTime = 0;
-                            runTime = 0;
-                            inJump = false;
+                            //rb.AddForce(new Vector3(lJumpDirection, lJumpHeight) * lJumpSpeed);
+                            // lJumpDirection value approx. = 0.055
+                            // lJumpHeight value approx. = 0.095
+
+                            rb.velocity = new Vector3(lJumpDirection, lJumpHeight, 0);
+                            // lJumpDirection value approx. = 0.055
+                            // lJumpHeight value approx. = 0.095
                         }
+                    }
+
+                    else
+                    {
+                        airTime = 0;
+                        runTime = 0;
+                        inJump = false;
                     }
                 }
             }
-        
+        }
+
         ledgeCollided = ledgeCollider.GetComponent<LedgeCollision>().collided;
         // Determines ledge that has been grabbed.
 
@@ -744,10 +744,13 @@ public class MovementScript : MonoBehaviour
         Vector3 down = transform.TransformDirection(Vector3.down) * 1.2f;
         Vector3 frontDown = new Vector3(transform.position.x + 0.38f, transform.position.y, transform.position.z);
         Vector3 backDown = new Vector3(transform.position.x - 0.38f, transform.position.y, transform.position.z);
+        Vector3 gunHeight = new Vector3(playerNose.transform.position.x, transform.position.y + 0.5f, transform.position.z);
+
         Vector3 right = transform.TransformDirection(Vector3.right) * 15f;
         Vector3 left = transform.TransformDirection(Vector3.left) * 15f;
 
         bool rayIntersectsSomething = Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
+        bool gunLineOfSight = lookLeft == true ? Physics.Raycast(transform.position, left, 15f) : Physics.Raycast(transform.position, right, 15f);
 
         Debug.DrawRay(transform.position, down, Color.green);
         Debug.DrawRay(frontDown, down, Color.red);
@@ -756,11 +759,11 @@ public class MovementScript : MonoBehaviour
 
         if (lookLeft == false)
         {
-            Debug.DrawRay(playerNose.transform.position, right, Color.blue);
+            Debug.DrawRay(gunHeight, right, Color.blue);
         }
         if (lookLeft == true)
         {
-            Debug.DrawRay(playerNose.transform.position, left, Color.green);
+            Debug.DrawRay(gunHeight, left, Color.green);
         }
 
 
@@ -768,7 +771,7 @@ public class MovementScript : MonoBehaviour
         {
             midAir = false;
         }
-        
+
         // Above = Floor Detected = On The Ground
         // Below = Floor Not Detected = In Mid Air
 
@@ -777,22 +780,44 @@ public class MovementScript : MonoBehaviour
             midAir = true;
         }
 
-        //private void OnCollisionEnter(Collision collision)
-        //{
-        //    midAir = false;
-        //}
+        if (gunLineOfSight)
+        {
 
-        //private void OnCollisionExit(Collision collision)
-        //{
-        //    midAir = true;
-        //}
+        }
+
+        if (gunAim == true && Input.GetKeyDown(KeyCode.Space))
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(gameObject.transform.position, lookLeft == true ? left * 15f : right * 15f, out hit))
+            {
+                Debug.Log(hit.transform.name);
+            }
+
+            Animator enemyAnimations;
+            if (hit.transform.tag == "Enemy")
+            {
+                enemyAnimations = hit.transform.gameObject.GetComponent<Animator>();
+
+                if (lookLeft == true)
+                {
+                    enemyAnimations.SetTrigger("hitFromRight");
+                }
+                else
+                {
+                    enemyAnimations.SetTrigger("hitFromLeft");
+                }
+            }
+        }
+
+
 
         hangTimer += Time.deltaTime;
+
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "LedgeCollider")
+        if (collision.gameObject.tag == "LedgeCollider" || collision.gameObject.tag == "Enemy")
         {
             //ledgeUnderneath = collision.gameObject;
 
@@ -816,7 +841,7 @@ public class MovementScript : MonoBehaviour
                 gunTimer = 0;
                 gunAim = true;
             }
-        } 
+        }
 
         //else if (impactSpeed.x == 0)
         //{
@@ -869,7 +894,7 @@ public class MovementScript : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-            ledgeUnderneath = emptyLedge;
+        ledgeUnderneath = emptyLedge;
     }
 
 }
