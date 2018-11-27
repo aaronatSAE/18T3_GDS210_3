@@ -23,6 +23,12 @@ public class MovementScript : MonoBehaviour
     public bool ledgeCollided;
     public bool ledgeHang;
 
+    [Header("Damage Grace Values")]
+    public bool gracePeriod;
+    public bool invincible;
+    public float graceTimer;
+    public float graceDelay;
+
     [Header("Gun Values")]
     public float gunTimer;
     public float gunDelay;
@@ -108,6 +114,19 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (gracePeriod == true)
+        {
+            invincible = true;
+
+            graceTimer += Time.deltaTime;
+            if (graceTimer > graceDelay)
+            {
+                gracePeriod = false;
+                invincible = false;
+                graceTimer = 0;
+            }
+        }
+
         if (ledgeCollided == true)
         {
             ledgeTimer += Time.deltaTime;
@@ -796,7 +815,7 @@ public class MovementScript : MonoBehaviour
             Animator enemyAnimations;
             if (hit.transform.tag == "Enemy")
             {
-                enemyAnimations = hit.transform.gameObject.GetComponent<Animator>();
+                enemyAnimations = hit.transform.gameObject.GetComponentInParent<Animator>();
 
                 if (lookLeft == true)
                 {
