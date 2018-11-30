@@ -168,7 +168,7 @@ public class MovementScript : MonoBehaviour
         if (rb.velocity.x == 0 && rb.velocity.y == 0 && rb.velocity.z == 0 && gunTimer > gunDelay)
         {
             /* Gun Mode/Aim ON/OFF */
-            if (Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKey(KeyCode.Tab))
             {
                 if (gunMode == true)
                 {
@@ -186,7 +186,7 @@ public class MovementScript : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && gunMode == true)
+            if (Input.GetKey(KeyCode.Space) && gunMode == true)
             {
                 if (gunAim == false)
                 {
@@ -246,7 +246,7 @@ public class MovementScript : MonoBehaviour
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKey(KeyCode.W))
             {
                 if (hangTimer > climbDelay)
                 {
@@ -349,9 +349,14 @@ public class MovementScript : MonoBehaviour
             {
                 if (midAir == false)
                 {
-                    if (Input.GetKeyDown(KeyCode.C))
+                    if (Input.GetKey(KeyCode.C))
                     {
-                        crouchOn = !crouchOn;
+                        // Temporary fix for instant crouch/uncrouch on button hold.
+                        if (lookTime > walkTurnDelay)
+                        {
+                            crouchOn = !crouchOn;
+                            lookTime = 0;
+                        }
                     }
                 }
             }
@@ -406,7 +411,7 @@ public class MovementScript : MonoBehaviour
             /* Jump button */
             if (midAir == false && gunMode == false)
             {
-                if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space)) && crouchOn == false)
+                if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space)) && crouchOn == false)
                 {
                     inJump = true;
                 }
@@ -433,12 +438,12 @@ public class MovementScript : MonoBehaviour
                     {
                         if (lookLeft == true)
                         {
-                            if (Input.GetKeyDown(KeyCode.D))
+                            if (Input.GetKey(KeyCode.D))
                             {
                                 lookTime = 0;
                             }
 
-                            else if (Input.GetKeyDown(KeyCode.A))
+                            else if (Input.GetKey(KeyCode.A))
                             {
                                 if (lookTime > crouchTurnDelay)
                                 {
@@ -450,12 +455,12 @@ public class MovementScript : MonoBehaviour
 
                         if (lookLeft == false)
                         {
-                            if (Input.GetKeyDown(KeyCode.A))
+                            if (Input.GetKey(KeyCode.A))
                             {
                                 lookTime = 0;
                             }
 
-                            else if (Input.GetKeyDown(KeyCode.D))
+                            else if (Input.GetKey(KeyCode.D))
                             {
                                 if (lookTime > crouchTurnDelay)
                                 {
@@ -804,7 +809,7 @@ public class MovementScript : MonoBehaviour
 
         }
 
-        if (gunAim == true && Input.GetKeyDown(KeyCode.Space))
+        if (gunAim == true && Input.GetKey(KeyCode.Space))
         {
             RaycastHit hit;
             if (Physics.Raycast(gameObject.transform.position, lookLeft == true ? left * 15f : right * 15f, out hit))
