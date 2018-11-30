@@ -20,14 +20,38 @@ public class EnemyCrawler : MonoBehaviour {
 
     public float hitDistance;
 
+    public bool ledgeDetected;
+
+    public GameObject hitLeftGO;
+    public GameObject hitRightGO;
+
+    public string ledgeDirection;
+
 	// Use this for initialization
 	void Start ()
     {
         alive = true;
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "LedgeFootDetector")
+        {
+            ledgeDetected = true;
+            ledgeDirection = other.transform.name;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "LedgeFootDetector")
+        {
+            ledgeDetected = false;
+        }
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
         Vector3 right = transform.TransformDirection(Vector3.right);
         Vector3 left = transform.TransformDirection(Vector3.left);
@@ -41,23 +65,32 @@ public class EnemyCrawler : MonoBehaviour {
 
         delayTimer += Time.deltaTime;
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, right * 15f, out hit))
+        RaycastHit hitLeft;
+        RaycastHit hitRight;
+
+        if (Physics.Raycast(transform.position, left * 15f, out hitLeft))
         {
-            if (hit.transform.tag == "Player")
+            if (hitLeft.transform.tag == "Player")
             {
-                playerInvincible = hit.transform.GetComponent<MovementScript>().invincible;
+                playerInvincible = hitLeft.transform.GetComponent<MovementScript>().invincible;
                 playerSeen = true;
 
                 if (delayDuration < delayTimer)
                 {
-                    if (hit.distance > meleeDistance)
+                    if (hitLeft.distance > meleeDistance)
                     {
-                        gameObject.transform.Translate(movementSpeed, 0, 0);
+                        if (ledgeDetected == true && ledgeDirection == "LFootDetection")
+                        {
+
+                        }
+                        else
+                        {
+                            gameObject.transform.Translate(-movementSpeed, 0, 0);
+                        }
                     }
                 }
 
-                if (hit.distance < weaponActiveDistance)
+                if (hitLeft.distance < weaponActiveDistance)
                 {
                     if (weaponOut == false)
                     {
@@ -66,7 +99,7 @@ public class EnemyCrawler : MonoBehaviour {
                     weaponOut = true;
                 }
 
-                if (hit.distance > weaponActiveDistance)
+                if (hitLeft.distance > weaponActiveDistance)
                 {
                     if (weaponOut == true)
                     {
@@ -75,74 +108,85 @@ public class EnemyCrawler : MonoBehaviour {
                     weaponOut = false;
                 }
 
-                if (hit.distance <= meleeDistance)
-                {
-                    if (playerInvincible == false)
-                    {
-                        hit.rigidbody.velocity = new Vector3(hit.rigidbody.velocity.x + knockbackDistance, hit.rigidbody.velocity.y + knockbackHeight, hit.rigidbody.velocity.z);
-                    }
-                    hit.transform.GetComponent<MovementScript>().gracePeriod = true;
-                }
-            }
-
-            else
-            {
-                playerSeen = false;
-            }
-
-            hit.distance = hitDistance;
-        }
-
-        if (Physics.Raycast(transform.position, left * 15f, out hit))
-        {
-            if (hit.transform.tag == "Player")
-            {
-                playerInvincible = hit.transform.GetComponent<MovementScript>().invincible;
-                playerSeen = true;
-
-                if (delayDuration < delayTimer)
-                {
-                    if (hit.distance > meleeDistance)
-                    {
-                        gameObject.transform.Translate(-movementSpeed, 0, 0);
-                    }
-                }
-
-                if (hit.distance < weaponActiveDistance)
-                {
-                    if (weaponOut == false)
-                    {
-                        delayTimer = 0;
-                    }
-                    weaponOut = true;
-                }
-
-                if (hit.distance > weaponActiveDistance)
-                {
-                    if (weaponOut == true)
-                    {
-                        delayTimer = 0;
-                    }
-                    weaponOut = false;
-                }
-
-                if (hit.distance <= meleeDistance)
+                if (hitLeft.distance <= meleeDistance)
                 {
                     //hit.transform.Translate(new Vector3(hit.transform.position.x + knockbackDistance, hit.transform.position.y + knockbackHeight, hit.transform.position.z));
                     if (playerInvincible == false)
                     {
-                        hit.rigidbody.velocity = new Vector3(hit.rigidbody.velocity.x - knockbackDistance, hit.rigidbody.velocity.y + knockbackHeight, hit.rigidbody.velocity.z);
+                        hitLeft.transform.GetComponent<PlayerHealth>().shield -= 1;
+                        hitLeft.rigidbody.velocity = new Vector3(hitLeft.rigidbody.velocity.x - knockbackDistance, hitLeft.rigidbody.velocity.y + knockbackHeight, hitLeft.rigidbody.velocity.z);
                     }
-                    hit.transform.GetComponent<MovementScript>().gracePeriod = true;
+                    hitLeft.transform.GetComponent<MovementScript>().gracePeriod = true;
                 }
+                hitDistance = hitLeft.distance;
+            }
+        }
+
+        if (Physics.Raycast(transform.position, right * 15f, out hitRight))
+        {
+            if (hitRight.transform.tag == "Player")
+            {
+                playerInvincible = hitRight.transform.GetComponent<MovementScript>().invincible;
+                playerSeen = true;
+
+                if (delayDuration < delayTimer)
+                {
+                    if (hitRight.distance > meleeDistance)
+                    {
+                        if (ledgeDetected == true && ledgeDirection == "RFootDetection")
+                        {
+
+                        }
+                        else
+                        {
+                            gameObject.transform.Translate( movementSpeed, 0, 0);
+                        }
+                    }
+                }
+
+                if (hitRight.distance < weaponActiveDistance)
+                {
+                    if (weaponOut == false)
+                    {
+                        delayTimer = 0;
+                    }
+                    weaponOut = true;
+                }
+
+                if (hitRight.distance > weaponActiveDistance)
+                {
+                    if (weaponOut == true)
+                    {
+                        delayTimer = 0;
+                    }
+                    weaponOut = false;
+                }
+
+                if (hitRight.distance <= meleeDistance)
+                {
+                    if (playerInvincible == false)
+                    {
+                        hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
+                        hitRight.rigidbody.velocity = new Vector3(hitRight.rigidbody.velocity.x + knockbackDistance, hitRight.rigidbody.velocity.y + knockbackHeight, hitRight.rigidbody.velocity.z);
+                    }
+                    hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
+                }
+                hitDistance = hitRight.distance;
+            }
+
+            hitLeftGO = hitLeft.transform.gameObject;
+            hitRightGO = hitRight.transform.gameObject;
+
+
+            if ((hitRight.transform.tag == "Player") || (hitLeft.transform.tag == "Player"))
+            {
+
             }
 
             else
             {
                 playerSeen = false;
             }
-
-            hitDistance = hit.distance;
         }
 
         if (playerSeen == false)
@@ -155,9 +199,11 @@ public class EnemyCrawler : MonoBehaviour {
             GetComponent<Animator>().SetTrigger("playerGone");
         }
 
-        if (hit.distance < weaponActiveDistance)
+        if (hitRight.distance < weaponActiveDistance || hitLeft.distance < weaponActiveDistance)
         {
             GetComponent<Animator>().SetTrigger("weaponOut");
         }
     }
+
+    
 }

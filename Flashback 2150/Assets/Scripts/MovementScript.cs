@@ -825,6 +825,9 @@ public class MovementScript : MonoBehaviour
                 {
                     enemyAnimations.SetTrigger("hitFromLeft");
                 }
+
+                hit.transform.GetComponent<EnemyCrawler>().enabled = false;
+                hit.transform.GetComponent<EnemyRifleman>().enabled = false;
             }
         }
 

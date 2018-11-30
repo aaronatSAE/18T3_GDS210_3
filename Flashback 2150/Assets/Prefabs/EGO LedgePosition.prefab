@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33202199458740192}
   - component: {fileID: 23131179733364482}
   - component: {fileID: 65205591265106814}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: RFootDetection
   m_TagString: LedgeFootDetector
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 33016010855394062}
   - component: {fileID: 23388561139908578}
   - component: {fileID: 65425467540959074}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: LFootDetection
   m_TagString: LedgeFootDetector
   m_Icon: {fileID: 0}
@@ -55,7 +55,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4817840614821068}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: EGO LedgePosition
   m_TagString: LedgeCollider
   m_Icon: {fileID: 0}
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 65804789274530796}
   - component: {fileID: 95088593148000960}
   - component: {fileID: 114997937125500576}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: LedgeCollision
   m_TagString: LedgeCollider
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1857418177069142}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.081, y: 1.703, z: 6.956}
+  m_LocalPosition: {x: 7.081, y: 1.703, z: -0.1340003}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4912981928545470}

@@ -16,6 +16,9 @@ public class EnemyRifleman : MonoBehaviour {
 
     public bool playerRight;
     public bool playerLeft;
+    public bool playerInvincible;
+    public float knockbackHeight;
+    public float knockbackDistance;
 
     public GameObject enemyLook;
     public GameObject nose;
@@ -23,6 +26,9 @@ public class EnemyRifleman : MonoBehaviour {
 
     public float delayTimer;
     public float delayDuration;
+
+    public float shootTimer;
+    public float shootDelay;
 
     // Use this for initialization
     void Start ()
@@ -33,28 +39,40 @@ public class EnemyRifleman : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        // Directional Vector3s for setting raycast directions.
         Vector3 right = transform.TransformDirection(Vector3.right);
         Vector3 left = transform.TransformDirection(Vector3.left);
+
+        // Height Vector3s for setting raycast heights.
         Vector3 gunHeight = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
         Vector3 crouchGunHeight = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z); 
 
+        // Draw debugs for left and right, gun height and crouch gun height.
         Debug.DrawRay(gunHeight, right * 15f, Color.blue);
         Debug.DrawRay(gunHeight, left * 15f, Color.green);
         Debug.DrawRay(crouchGunHeight, right * 15f, Color.green);
         Debug.DrawRay(crouchGunHeight, left * 15f, Color.blue);
 
+        // Bool for when raycasts are hit, not currently being used.
         bool gunLineOfSight = Physics.Raycast(gunHeight, right, 15f) || Physics.Raycast(gunHeight, left, 15f) || Physics.Raycast(crouchGunHeight, right, 15f) || Physics.Raycast(crouchGunHeight, left, 15f);
 
         noseMaterial = nose.GetComponent<Renderer>().material;
 
-        RaycastHit hit;
-        if (Physics.Raycast(crouchGunHeight, right * 15f, out hit))
+        // Raycast right and left variables.
+        RaycastHit hitRight;
+        RaycastHit hitLeft;
+
+        // Raycast for when player is on the right.
+        if (Physics.Raycast(crouchGunHeight, right * 15f, out hitRight))
         {
-            if (hit.transform.tag == "Player")
+            // If the object hit by raycast is tagged "Player", several functions play out.
+            if (hitRight.transform.tag == "Player")
             {
+                // Confirms that the player is on the right. Referenced later in the code.
                 playerRight = true;
 
-                if (hit.transform.GetComponent<MovementScript>().crouchOn == true)
+                // Detects if the player is crouching, and toggles enemy crouch to match.
+                if (hitRight.transform.GetComponent<MovementScript>().crouchOn == true)
                 {
                     crouchOn = true;
                 }
@@ -63,34 +81,50 @@ public class EnemyRifleman : MonoBehaviour {
                     crouchOn = false;
                 }
             }
+            // If the object hit by raycast isn't tagged "Player", player right is false.
             else
             {
                 playerRight = false;
             }
         }
 
-        if (Physics.Raycast(crouchGunHeight, left * 15f, out hit))
+        // Raycast for when player is on the left.
+        if (Physics.Raycast(crouchGunHeight, left * 15f, out hitLeft))
         {
-            if (hit.transform.tag == "Player")
+            // If the object hit by raycast is tagged "Player", several functions play out.
+            if (hitLeft.transform.tag == "Player")
             {
+                // Confirms that the player is on the left. Referenced later in the code.
                 playerLeft = true;
-                if (hit.transform.GetComponent<MovementScript>().crouchOn == true)
+
+                // Detects if the player is crouching, and toggles enemy crouch to match.
+                if (hitLeft.transform.GetComponent<MovementScript>().crouchOn == true)
                 {
                     crouchOn = true;
-                    delayTimer = 0;
                 }
                 else
                 {
                     crouchOn = false;
-                    delayTimer = 0;
                 }
-            }
+            } 
+            // If the object hit by raycast isn't tagged "Player", player right is false
             else
             {
                 playerLeft = false;
             }
         }
 
+        // Checks whether the player is seen by the enemy.
+        if (hitLeft.transform.tag == "Player" || hitRight.transform.tag == "Player")
+        {
+            playerSeen = true;
+        }
+        else
+        {
+            playerSeen = false;
+        }
+
+        // Controls scale of the enemy for crouching, currently as placeholder for crouching animation.
         if (crouchOn == true)
         {
             if (weaponAim == true)
@@ -113,19 +147,21 @@ public class EnemyRifleman : MonoBehaviour {
             }
         }
 
+        // Links identification of player location with enemy rotation.
         if (playerRight == true)
         {
             lookLeft = false;
         }
-
         if (playerLeft == true)
         {
             lookLeft = true;
         }
 
+
         delayTimer += Time.deltaTime;
 
-        if (playerLeft == true || playerRight == true)
+        // Series of timers that control transitions between the enemy idle state, gun out and gun aim states.
+        if (playerSeen == true)
         {    
             if (delayTimer > delayDuration)
             {
@@ -151,7 +187,8 @@ public class EnemyRifleman : MonoBehaviour {
             }
         }
 
-        if (playerLeft == false && playerRight == false)
+        // Series of timers that reverses the above transitions. Gun aim > gun out > idle.
+        if (playerSeen == false)
         {
             if (delayTimer > delayDuration)
             {
@@ -177,64 +214,55 @@ public class EnemyRifleman : MonoBehaviour {
             }
         }
 
-        //if (playerCrouch == true)
-        //{
-        //    transform.localScale = new Vector3(1.1f, 1f, 1.1f);
-        //    // Crouching scale
-        //}
-
-        //else
-        //{
-        //    transform.localScale = new Vector3(0.75f, 2f, 0.75f);
-        //    // Standing scale
-        //}
-
-        //if (Physics.Raycast(gunHeight, left * 15f, out hit))
-        //{
-        //        if (hit.transform.tag == "Player")
-        //        {
-        //            transform.localScale = new Vector3(0.75f, 2, 0.75f);
-        //            playerSeen = true;
-        //            lookLeft = true;
-        //            playerCrouch = true;
-        //        }
-        //        else
-        //        {
-        //            playerSeen = false;
-        //            playerCrouch = true;
-        //        }
-        //    else
-        //    {
-        //        if (hit.transform.tag == "Player")
-        //        {
-        //            transform.localScale = new Vector3(1.1f, 1f, 1.1f);
-        //            playerSeen = true;
-        //            lookLeft = true;
-
-        //            if (playerCrouch == true)
-        //            {
-        //                transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
-        //                playerCrouch = false;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            playerCrouch = true;
-        //        }
-        //    }
-        //}
-
-
-        if (playerSeen == false)
+        // Controls player knockback and damage.
+        if (weaponAim == true)
         {
-            GetComponent<Animator>().SetTrigger("playerGone");
+            shootTimer += Time.deltaTime;
+
+
+            if (shootTimer > shootDelay)
+            {
+                if (playerLeft == true)
+                {
+                    playerInvincible = hitLeft.transform.GetComponent<MovementScript>().invincible;
+                    if (playerInvincible == false)
+                    {
+                        hitLeft.transform.GetComponent<PlayerHealth>().shield -= 1;
+                        hitLeft.rigidbody.velocity = new Vector3(hitLeft.rigidbody.velocity.x - knockbackDistance, hitLeft.rigidbody.velocity.y + knockbackHeight, hitLeft.rigidbody.velocity.z);
+                    }
+                    hitLeft.transform.GetComponent<MovementScript>().gracePeriod = true;
+                }
+
+                if (playerRight == true)
+                {
+                    playerInvincible = hitRight.transform.GetComponent<MovementScript>().invincible;
+                    if (playerInvincible == false)
+                    {
+                        hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
+                        hitRight.rigidbody.velocity = new Vector3(hitRight.rigidbody.velocity.x + knockbackDistance, hitRight.rigidbody.velocity.y + knockbackHeight, hitRight.rigidbody.velocity.z);
+                    }
+                    hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
+                }
+                
+            }
+        }
+        else
+        {
+            shootTimer = 0;
         }
 
+
+        // Was intended to animate when the player stops aiming at player. No use as of yet.
+        if (playerSeen == false)
+        {
+            GetComponentInParent<Animator>().SetTrigger("playerGone");
+        }
+
+        // Controls bool in the enemyLook animator that controls placeholder left and right look animations.
         if (lookLeft == true)
         {
             enemyLook.GetComponent<Animator>().SetBool("left?", true);
         }
-
         else if (lookLeft == false)
         {
             enemyLook.GetComponent<Animator>().SetBool("left?", false);
