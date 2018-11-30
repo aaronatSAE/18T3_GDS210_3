@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 23426700483503854}
   - component: {fileID: 65451986837669374}
   - component: {fileID: 54687119586706294}
+  - component: {fileID: 114649239780949140}
   - component: {fileID: 114045301016745410}
   m_Layer: 0
   m_Name: Player Test
@@ -119,7 +120,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1492752579861162}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.7103983, y: 2.7583168, z: 7.0965276}
+  m_LocalPosition: {x: 1.28, y: 2.79, z: 7.0965276}
   m_LocalScale: {x: 0.75, y: 2, z: 0.75}
   m_Children:
   - {fileID: 4402364025077180}
@@ -339,10 +340,15 @@ MonoBehaviour:
   jumpDuration: 0.2
   playerNose: {fileID: 1096824763075400}
   noseMaterial: {fileID: 0}
+  crouchOn: 0
   inJump: 0
   midAir: 0
   ledgeCollided: 0
   ledgeHang: 0
+  gracePeriod: 0
+  invincible: 0
+  graceTimer: 0
+  graceDelay: 2
   gunTimer: 0
   gunDelay: 1
   rollingSpeed: 9.25
@@ -387,6 +393,18 @@ MonoBehaviour:
   lookTime: 0
   debug: 1
   lookDelay: 0
+--- !u!114 &114649239780949140
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1492752579861162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 433da2b3449137849a88774b9c3fa375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shield: 5
 --- !u!114 &114774204455188898
 MonoBehaviour:
   m_ObjectHideFlags: 1
