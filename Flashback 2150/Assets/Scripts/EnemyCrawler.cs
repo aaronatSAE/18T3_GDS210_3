@@ -94,9 +94,6 @@ public class EnemyCrawler : MonoBehaviour {
                 {
                     if (weaponOut == false)
                     {
-                        GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
-                        GetComponent<BoxCollider>().center = new Vector3(0, 0, 0);
-                        
                         delayTimer = 0;
                     }
                     weaponOut = true;
@@ -106,8 +103,6 @@ public class EnemyCrawler : MonoBehaviour {
                 {
                     if (weaponOut == true)
                     {
-                        GetComponent<BoxCollider>().size = new Vector3(1f, 0.5f, 1f);
-                        GetComponent<BoxCollider>().center = new Vector3(0, -0.25f, 0);
                         delayTimer = 0;
                     }
                     weaponOut = false;
@@ -153,8 +148,6 @@ public class EnemyCrawler : MonoBehaviour {
                 {
                     if (weaponOut == false)
                     {
-                        GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
-                        GetComponent<BoxCollider>().center = new Vector3(0, 0, 0);
                         delayTimer = 0;
                     }
                     weaponOut = true;
@@ -164,8 +157,6 @@ public class EnemyCrawler : MonoBehaviour {
                 {
                     if (weaponOut == true)
                     {
-                        GetComponent<BoxCollider>().size = new Vector3(1f, 0.5f, 1f);
-                        GetComponent<BoxCollider>().center = new Vector3(0, -0.25f, 0);
                         delayTimer = 0;
                     }
                     weaponOut = false;

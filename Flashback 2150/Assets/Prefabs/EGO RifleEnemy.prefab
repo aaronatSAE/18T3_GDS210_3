@@ -340,7 +340,6 @@ MonoBehaviour:
   hitLeftGO: {fileID: 0}
   hitRightGO: {fileID: 0}
   ledgeDirection: 
-  weaponHitbox: {fileID: 0}
 --- !u!114 &114169743651579034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -361,12 +360,11 @@ MonoBehaviour:
   playerCrouch: 0
   crouchOn: 0
   crouchToggle: 0
-  shotTaken: 0
   playerRight: 0
   playerLeft: 0
   playerInvincible: 0
-  knockbackHeight: 2.5
-  knockbackDistance: 3
+  knockbackHeight: 1
+  knockbackDistance: 1
   enemyLook: {fileID: 1088758789780730}
   nose: {fileID: 1944270148785374}
   noseMaterial: {fileID: 0}

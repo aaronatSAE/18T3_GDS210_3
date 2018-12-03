@@ -14,8 +14,6 @@ public class EnemyRifleman : MonoBehaviour {
     public bool crouchOn;
     public bool crouchToggle;
 
-    public bool shotTaken;
-
     public bool playerRight;
     public bool playerLeft;
     public bool playerInvincible;
@@ -229,15 +227,10 @@ public class EnemyRifleman : MonoBehaviour {
                     playerInvincible = hitLeft.transform.GetComponent<MovementScript>().invincible;
                     if (playerInvincible == false)
                     {
-                        if (shotTaken == false)
-                        {
-                            hitLeft.transform.GetComponent<PlayerHealth>().shield -= 1;
-                            shotTaken = true;
-                        }
+                        hitLeft.transform.GetComponent<PlayerHealth>().shield -= 1;
                         hitLeft.rigidbody.velocity = new Vector3(hitLeft.rigidbody.velocity.x - knockbackDistance, hitLeft.rigidbody.velocity.y + knockbackHeight, hitLeft.rigidbody.velocity.z);
                     }
                     hitLeft.transform.GetComponent<MovementScript>().gracePeriod = true;
-                    shootTimer = 0;
                 }
 
                 if (playerRight == true)
@@ -245,27 +238,16 @@ public class EnemyRifleman : MonoBehaviour {
                     playerInvincible = hitRight.transform.GetComponent<MovementScript>().invincible;
                     if (playerInvincible == false)
                     {
-                        if (shotTaken == false)
-                        {
-                            hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
-                            shotTaken = true;
-                        }
+                        hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
                         hitRight.rigidbody.velocity = new Vector3(hitRight.rigidbody.velocity.x + knockbackDistance, hitRight.rigidbody.velocity.y + knockbackHeight, hitRight.rigidbody.velocity.z);
                     }
                     hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
-                    shootTimer = 0;
                 }
                 
             }
-            else
-            {
-                shotTaken = false;
-            }
-
         }
         else
         {
-            shotTaken = false;
             shootTimer = 0;
         }
 

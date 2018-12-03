@@ -6,9 +6,6 @@ public class LedgeCollision : MonoBehaviour {
 
     public bool collided;
     public GameObject ledgeGrabbed;
-    public GameObject player;
-    public bool ledgeDirection;
-    public bool playerDirection;
 
 	// Use this for initialization
 	void Start ()
@@ -19,19 +16,15 @@ public class LedgeCollision : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        playerDirection = player.GetComponent<MovementScript>().lookLeft;
+		
 	}
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "LedgeCollider")
         {
+            collided = true;
             ledgeGrabbed = other.gameObject;
-            ledgeDirection = ledgeGrabbed.GetComponent<FootDetection>().left;
-            if (ledgeDirection != playerDirection)
-            {
-                collided = true;
-            }
         }
     }
 
@@ -39,10 +32,8 @@ public class LedgeCollision : MonoBehaviour {
     {
         if (other.tag == "LedgeCollider")
         {
-            if (ledgeDirection != playerDirection)
-            {
-                collided = false;
-            }
+            collided = false;
+
         }
     }
 }
