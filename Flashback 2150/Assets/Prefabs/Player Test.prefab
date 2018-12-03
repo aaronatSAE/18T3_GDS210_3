@@ -120,7 +120,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1492752579861162}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.28, y: 2.79, z: 7.0965276}
+  m_LocalPosition: {x: 1.28, y: 2.75, z: 7.0965276}
   m_LocalScale: {x: 0.75, y: 2, z: 0.75}
   m_Children:
   - {fileID: 4402364025077180}
@@ -348,7 +348,7 @@ MonoBehaviour:
   gracePeriod: 0
   invincible: 0
   graceTimer: 0
-  graceDelay: 2
+  graceDelay: 4
   gunTimer: 0
   gunDelay: 1
   rollingSpeed: 9.25
@@ -405,6 +405,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shield: 5
+  currentScene: 
+  deathTimer: 0
+  deathDelay: 2
 --- !u!114 &114774204455188898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -418,6 +421,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collided: 0
   ledgeGrabbed: {fileID: 0}
+  player: {fileID: 1492752579861162}
+  ledgeDirection: 0
+  playerDirection: 0
 --- !u!135 &135870430377602874
 SphereCollider:
   m_ObjectHideFlags: 1
