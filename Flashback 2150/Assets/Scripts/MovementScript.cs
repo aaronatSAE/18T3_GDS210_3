@@ -882,6 +882,7 @@ public class MovementScript : MonoBehaviour
         //}
     }
 
+    // Controls lowering down ledges.
     private void OnTriggerStay(Collider other)
     {
         if (other.gameObject.tag == "LedgeFootDetector" && gunMode == false)
@@ -892,30 +893,15 @@ public class MovementScript : MonoBehaviour
             {
                 if (other.gameObject.name == "LFootDetection" && lookLeft == false && Input.GetKeyDown(KeyCode.S))
                 {
-                    //ledgeUnderneath.GetComponent<Animator>().SetTrigger("climbRight");
                     hangTimer = 0;
                     ledgeUnderneath.GetComponentInParent<Animator>().SetTrigger("hangRight");
                 }
                 else if (other.gameObject.name == "RFootDetection" && lookLeft == true && Input.GetKeyDown(KeyCode.S))
                 {
-                    //ledgeUnderneath.GetComponent<Animator>().SetTrigger("climbRight");
                     hangTimer = 0;
                     ledgeUnderneath.GetComponentInParent<Animator>().SetTrigger("hangLeft");
                 }
             }
-
-            //if (climbing == false && Input.GetKeyDown(KeyCode.S))
-            //{
-            //    if (other.gameObject.name == "LFootDetection")
-            //    {
-            //        ledgeCo
-            //    }
-
-            //    else if (other.gameObject.name == "RFootDetection")
-            //    {
-
-            //    }
-
         }
     }
 
