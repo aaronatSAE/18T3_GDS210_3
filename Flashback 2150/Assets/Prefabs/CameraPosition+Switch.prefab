@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 23339517186477438}
   - component: {fileID: 65160184724103666}
   - component: {fileID: 114431736003232752}
-  m_Layer: 10
+  m_Layer: 2
   m_Name: CameraSwitch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
