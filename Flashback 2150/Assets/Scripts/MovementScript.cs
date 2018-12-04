@@ -114,6 +114,7 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        // If gracePeriod is true, the player will be invincible for the duration of the grace period delay.
         if (gracePeriod == true)
         {
             invincible = true;
@@ -127,6 +128,7 @@ public class MovementScript : MonoBehaviour
             }
         }
 
+        // Detects which ledge in the map was grabbed and, depending on the player orientation, snaps the player to the ledge.
         if (ledgeCollided == true)
         {
             ledgeTimer += Time.deltaTime;
@@ -154,17 +156,17 @@ public class MovementScript : MonoBehaviour
                 ledgeHang = true;
             }
         }
-        // Detects which ledge in the map was grabbed and, depending on the player orientation, snaps the player to the ledge.
         // Also makes the rigidbody of the player a kinematic to keep the player in place.
 
+        // If the player hasn't grabbed onto a ledge, the player is affected by gravity.
         else
         {
             ledgeHang = false;
             GetComponent<Rigidbody>().isKinematic = false;
         }
 
+        // Controls when a player do gun-related actions.
         gunTimer += Time.deltaTime;
-
         if (rb.velocity.x == 0 && rb.velocity.y == 0 && rb.velocity.z == 0 && gunTimer > gunDelay)
         {
             /* Gun Mode/Aim ON/OFF */
@@ -186,6 +188,7 @@ public class MovementScript : MonoBehaviour
                 }
             }
 
+            // Controls switching between gun out and gun aim stances.
             if (Input.GetKey(KeyCode.Space) && gunMode == true)
             {
                 if (gunAim == false)
@@ -196,19 +199,21 @@ public class MovementScript : MonoBehaviour
                 }
             }
 
+            // Disables gun aim when attempting to move.
             if (gunAim == true && ((lookLeft == true && Input.GetKey(KeyCode.A) || lookLeft == false && Input.GetKey(KeyCode.D))))
             {
                 gunAim = false;
                 gunTimer = 0;
             }
 
+            // Restarts gun timer to add animation delay to actions placed by the player.
             if (gunMode == true && ((lookLeft == false && Input.GetKey(KeyCode.A) || lookLeft == true && Input.GetKey(KeyCode.D))))
             {
                 gunTimer = 0;
             }
         }
 
-
+        // Controls player nose colour for debugging purposes.
         if (gunAim == true)
         {
             noseMaterial.color = Color.red;
@@ -222,6 +227,8 @@ public class MovementScript : MonoBehaviour
             noseMaterial.color = Color.green;
         }
 
+        // Controls player hang drop. Position of drop depends on whether the player looks left or right.
+        // Disables kinematic mode to allow player to move after hanging.
         if (ledgeHang == true)
         {
             if (hangTimer > hangDelay)
@@ -238,7 +245,6 @@ public class MovementScript : MonoBehaviour
                         hangTimer = 0;
                         gameObject.transform.localPosition = new Vector3(0.7789993f, -1.3f, 0);
                     }
-
                     GetComponent<Rigidbody>().isKinematic = false;
                     ledgeCollided = false;
                     ledgeHang = false;
@@ -246,76 +252,64 @@ public class MovementScript : MonoBehaviour
                 }
             }
 
+            // Controls player climb. Animation is picked depending on player look direction.
             if (Input.GetKey(KeyCode.W))
             {
                 if (hangTimer > climbDelay)
                 {
                     climbing = true;
+                    ledgeTimer = 0;
+                    hangTimer = 0;
+                    GetComponent<Rigidbody>().isKinematic = false;
+                    ledgeCollided = false;
+                    ledgeHang = false;
+
                     if (lookLeft == false)
                     {
-                        ledgeTimer = 0;
-                        hangTimer = 0;
-                        GetComponent<Rigidbody>().isKinematic = false;
-                        ledgeCollided = false;
-                        ledgeHang = false;
                         ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbRight");
                     }
-
                     if (lookLeft == true)
                     {
-                        ledgeTimer = 0;
-                        hangTimer = 0;
-                        GetComponent<Rigidbody>().isKinematic = false;
-                        ledgeCollided = false;
-                        ledgeHang = false;
                         ledgeGrabbed.GetComponent<Animator>().SetTrigger("climbLeft");
                     }
                 }
             }
 
+            // Changes the player prefab parent to empty game ledge (an EGO within the scene). This allows the player to let go of the current ledge when climbing up.
+            // There's probably a better way of doing this.
             if (climbTimer >= climbDelay)
             {
                 gameObject.transform.parent = emptyLedge.transform;
             }
 
-
+            // Timer used to "time" when the player lets go of the ledge.
+            // There's probably a better way of doing this too.
             if (climbing == true)
             {
                 climbTimer += Time.deltaTime;
             }
         }
-        // Dictates actions the player may take while they hang on a ledge.
-
-
 
         else
         {
-            //ledgeGrabbed = emptyLedge;
+            // Resets the ledge timer while not attached to ledge.
             ledgeTimer = 0;
-            //ledgeHang = false;
-            //GetComponent<Rigidbody>().isKinematic = false;
-
 
             /* Look Direction */
             if (midAir == false)
             {
+                // Ensures that climbing is set to false when the player is not climbing/not in mid air.
                 climbing = false;
                 climbTimer = 0;
 
-                if (Input.GetKeyDown(KeyCode.A) && Input.GetKeyDown(KeyCode.D))
+                // If else statement that controls player look direction.
+                if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) == false)
                 {
+                    lookLeft = true;
                 }
-
-                else
+                else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) == false)
                 {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        lookLeft = true;
-                    }
-                    else if (Input.GetKey(KeyCode.D))
-                    {
-                        lookLeft = false;
-                    }
+                    lookLeft = false;
                 }
             }
 
@@ -365,15 +359,16 @@ public class MovementScript : MonoBehaviour
             /* Crouch/Standing Scales */
             if (crouchOn == true)
             {
+                // Allows the lookTime timer to work while in crouch mode.
                 lookTime += Time.deltaTime;
-                transform.localScale = new Vector3(1.1f, 1f, 1.1f);
 
+                //The rest of this if else statement controls the scale and position of the player while crouching and uncrouching.
+                transform.localScale = new Vector3(1.1f, 1f, 1.1f);
                 if (crouchToggle == false)
                 {
                     transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                     crouchToggle = true;
                 }
-                // crouchToggle controls position of player when it scales
             }
             else
             {
@@ -383,13 +378,13 @@ public class MovementScript : MonoBehaviour
                     transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
                     crouchToggle = false;
                 }
-                // crouchToggle controls position of player when it scales
             }
 
 
             /* Jump Mechanics*/
             /* Stationary Jump */
-            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) || (Input.GetKeyUp(KeyCode.A) && Input.GetKeyUp(KeyCode.D)))
+            // Sets running jump direction to 0 incase of reasons.
+            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A) == false && Input.GetKey(KeyCode.D) == false))
             {
                 rJumpDirection = 0;
             }
@@ -397,6 +392,7 @@ public class MovementScript : MonoBehaviour
             /* Running Jump Direction */
             else
             {
+                // Sets jump direction based on look direction.
                 if (lookLeft == true)
                 {
                     rJumpDirection = -rJumpPropulsion;
@@ -406,18 +402,21 @@ public class MovementScript : MonoBehaviour
                     rJumpDirection = rJumpPropulsion;
                 }
             }
-            // Values set in Inspector
+            // Values set in Inspector.
 
             /* Jump button */
+            // Allows the player to jump under the conditions that they are not currently in midair, with the gun out and not crouched.
             if (midAir == false && gunMode == false)
             {
                 if ((Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.Space)) && crouchOn == false)
                 {
+                    midAir = true;
                     inJump = true;
                 }
             }
 
             /* Leap Jump Direction */
+            // Sets leap direction based on look direction.
             if (lookLeft == true)
             {
                 lJumpDirection = -lJumpPropulsion;
@@ -432,6 +431,7 @@ public class MovementScript : MonoBehaviour
             /* Roll direction */
             if (timeRolling > rollDelay)
             {
+                // Rolling mechanics when debug bool is false. The current way players roll.
                 if (debug == false)
                 {
                     if (crouchOn == true)
@@ -452,7 +452,6 @@ public class MovementScript : MonoBehaviour
                                 }
                             }
                         }
-
                         if (lookLeft == false)
                         {
                             if (Input.GetKey(KeyCode.A))
@@ -472,43 +471,34 @@ public class MovementScript : MonoBehaviour
                     }
                 }
 
+                // Rolling mechanics when debug bool is true. This is used as a toggle to test more refined ways of rolling.
                 if (debug == true)
                 {
                     if (crouchOn == true)
                     {
-                        if (lookLeft == true)
+                        if (Input.GetKeyDown(KeyCode.A))
                         {
-                            if (Input.GetKeyDown(KeyCode.D))
+                            if (lookLeft == true)
+                            {
+                                timeRolling = 0;
+                                rollingLeft = true;
+                            }
+                            else
                             {
                                 lookTime = 0;
-                                lookDelay = false;
-                            }
-
-                            else if (Input.GetKeyDown(KeyCode.A))
-                            {
-                                if (lookTime > crouchTurnDelay)
-                                {
-                                    timeRolling = 0;
-                                    rollingLeft = true;
-                                }
                             }
                         }
 
-                        if (lookLeft == false)
+                        if (Input.GetKeyDown(KeyCode.D))
                         {
-                            if (Input.GetKeyDown(KeyCode.A))
+                            if (lookLeft == false)
+                            {
+                                timeRolling = 0;
+                                rollingRight = true;
+                            }
+                            else
                             {
                                 lookTime = 0;
-                                lookDelay = false;
-                            }
-
-                            else if (Input.GetKeyDown(KeyCode.D))
-                            {
-                                if (lookTime > crouchTurnDelay)
-                                {
-                                    timeRolling = 0;
-                                    rollingRight = true;
-                                }
                             }
                         }
                     }
@@ -516,27 +506,27 @@ public class MovementScript : MonoBehaviour
 
             }
 
+            // Sets the value of look time to 0 while the player is rolling. Looktime is a value used to add delays to player movement/animations.
             if (rollingLeft == true || rollingRight == true)
             {
                 lookTime = 0;
             }
 
             timeRolling += Time.deltaTime;
-
             /* Rolling movement */
             if (rollingRight == true)
             {
+                // Momentum added to the player while they roll right off of edges. Speeds up fall time to make falling less floaty.
                 if (midAir == true)
                 {
                     rb.AddForce(new Vector3(-rollFallMomentumX, -rollFallMomentumY, 0));
                 }
 
+                // Else statement controls rolling direction and speed.
                 else
                 {
                     if (timeRolling < rollDuration)
                     {
-                        //transform.Translate(Vector3.right * Time.deltaTime * rollingSpeed);
-                        //rb.AddForce(Vector3.right * rollingSpeed);
                         rb.velocity = Vector3.right * rollingSpeed;
                     }
 
@@ -550,17 +540,17 @@ public class MovementScript : MonoBehaviour
 
             if (rollingLeft == true)
             {
+                // Momentum added to the player while they roll left off of edges.
                 if (midAir == true)
                 {
                     rb.AddForce(new Vector3(rollFallMomentumX, -rollFallMomentumY, 0));
                 }
 
+                // Else statement controls rolling direction and speed.
                 else
                 {
                     if (timeRolling < rollDuration)
                     {
-                        //transform.Translate(Vector3.left * Time.deltaTime * rollingSpeed);
-                        //rb.AddForce(Vector3.left * rollingSpeed);
                         rb.velocity = Vector3.left * rollingSpeed;
                     }
 
@@ -573,30 +563,33 @@ public class MovementScript : MonoBehaviour
             }
 
             /* Walking, Running and Crouch Mechanics */
+            // If statement allows basic movement so long as the player isn't crouched, in mid air, aiming their gun or rolling. Gun delay is added to account for gun animations.
             if (crouchOn == false && midAir == false && gunAim == false && gunTimer > gunDelay || rollingLeft == true || rollingRight == true)
             {
-                if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift))
+                // Resets running timer for when a player decides to walk after a run.
+                if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftShift) || (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D)) == true)
                 {
                     runTime = 0;
                 }
-                // Resets running timer for when a player decides to walk after a run.
 
                 /* Running */
+                // Disables running if gun mode is on.
                 if (gunMode == false)
                 {
+                    // runningOn is activated earlier in the script via Input.GetKey(KeyCode.LeftShift)
                     if (runningOn == true)
                     {
                         lookTime += Time.deltaTime;
 
                         if (lookTime > runTurnDelay)
                         {
+                            // Running movement for left and right keys
                             if (Input.GetKey(KeyCode.D))
                             {
                                 transform.Translate(Vector3.right * Time.deltaTime * runningSpeed);
                                 rb.velocity = new Vector3(2f, -2f, 0);
                                 runTime += Time.deltaTime;
                             }
-
                             if (Input.GetKey(KeyCode.A))
                             {
                                 transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
@@ -604,6 +597,7 @@ public class MovementScript : MonoBehaviour
                                 runTime += Time.deltaTime;
                             }
 
+                            // Resets looktime for movement delay/animations
                             if ((Input.GetKeyDown(KeyCode.D) || (Input.GetKeyDown(KeyCode.A))))
                             {
                                 lookTime = 0;
@@ -692,6 +686,7 @@ public class MovementScript : MonoBehaviour
             if (inJump == true)
             {
                 airTime += Time.deltaTime;
+                midAir = true;
 
                 /* Stationary Jump */
                 if (runningOn == false)
@@ -776,9 +771,9 @@ public class MovementScript : MonoBehaviour
         bool rayIntersectsSomething = Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
         bool gunLineOfSight = lookLeft == true ? Physics.Raycast(transform.position, left, 15f) : Physics.Raycast(transform.position, right, 15f);
 
-        Debug.DrawRay(transform.position, down, Color.green);
-        Debug.DrawRay(frontDown, down, Color.red);
-        Debug.DrawRay(backDown, down, Color.cyan);
+        Debug.DrawRay(transform.position, down * 0.9f, Color.green);
+        Debug.DrawRay(frontDown, down * 0.9f, Color.red);
+        Debug.DrawRay(backDown, down * 0.9f, Color.cyan);
         // Raycasts bottom of player to detect floor.
 
         if (lookLeft == false)
