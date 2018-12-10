@@ -27,6 +27,11 @@ public class EnemyCrawler : MonoBehaviour {
 
     public string ledgeDirection;
 
+    public AudioSource enemyHurt;
+
+    public float zapTimer;
+    public float zapDelay;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -68,8 +73,12 @@ public class EnemyCrawler : MonoBehaviour {
         RaycastHit hitLeft;
         RaycastHit hitRight;
 
+        zapTimer += Time.deltaTime;
+
+        // Raycast checks left from enemy.
         if (Physics.Raycast(transform.position, left * 15f, out hitLeft))
         {
+            // Checks if target hit has "Player" tag.
             if (hitLeft.transform.tag == "Player")
             {
                 playerInvincible = hitLeft.transform.GetComponent<MovementScript>().invincible;
@@ -111,12 +120,16 @@ public class EnemyCrawler : MonoBehaviour {
                 if (hitLeft.distance <= meleeDistance)
                 {
                     //hit.transform.Translate(new Vector3(hit.transform.position.x + knockbackDistance, hit.transform.position.y + knockbackHeight, hit.transform.position.z));
-                    if (playerInvincible == false)
+                    if (zapTimer > zapDelay)
                     {
-                        hitLeft.transform.GetComponent<PlayerHealth>().shield -= 1;
-                        hitLeft.rigidbody.velocity = new Vector3(hitLeft.rigidbody.velocity.x - knockbackDistance, hitLeft.rigidbody.velocity.y + knockbackHeight, hitLeft.rigidbody.velocity.z);
+                        if (playerInvincible == false)
+                        {
+                            hitLeft.transform.GetComponent<PlayerHealth>().shield -= 1;
+                            hitLeft.rigidbody.velocity = new Vector3(hitLeft.rigidbody.velocity.x - knockbackDistance, hitLeft.rigidbody.velocity.y + knockbackHeight, hitLeft.rigidbody.velocity.z);
+                        }
+                        hitLeft.transform.GetComponent<MovementScript>().gracePeriod = true;
+                        zapTimer = 0;
                     }
-                    hitLeft.transform.GetComponent<MovementScript>().gracePeriod = true;
                 }
                 hitDistance = hitLeft.distance;
             }
@@ -164,12 +177,16 @@ public class EnemyCrawler : MonoBehaviour {
 
                 if (hitRight.distance <= meleeDistance)
                 {
-                    if (playerInvincible == false)
+                    if (zapTimer > zapDelay)
                     {
-                        hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
-                        hitRight.rigidbody.velocity = new Vector3(hitRight.rigidbody.velocity.x + knockbackDistance, hitRight.rigidbody.velocity.y + knockbackHeight, hitRight.rigidbody.velocity.z);
+                        if (playerInvincible == false)
+                        {
+                            hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
+                            hitRight.rigidbody.velocity = new Vector3(hitRight.rigidbody.velocity.x + knockbackDistance, hitRight.rigidbody.velocity.y + knockbackHeight, hitRight.rigidbody.velocity.z);
+                        }
+                        hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
+                        zapTimer = 0;
                     }
-                    hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
                 }
                 hitDistance = hitRight.distance;
             }

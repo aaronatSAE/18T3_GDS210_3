@@ -30,6 +30,9 @@ public class EnemyRifleman : MonoBehaviour {
     public float shootTimer;
     public float shootDelay;
 
+    public AudioClip shootSound;
+    public AudioSource enemyHurt;
+
     // Use this for initialization
     void Start ()
     {
@@ -107,7 +110,7 @@ public class EnemyRifleman : MonoBehaviour {
                     crouchOn = false;
                 }
             } 
-            // If the object hit by raycast isn't tagged "Player", player right is false
+            // If the object hit by raycast isn't tagged "Player", player left is false
             else
             {
                 playerLeft = false;
@@ -214,7 +217,7 @@ public class EnemyRifleman : MonoBehaviour {
             }
         }
 
-        // Controls player knockback and damage.
+        // Controls player knockback and damage. In effect, the shooting function.
         if (weaponAim == true)
         {
             shootTimer += Time.deltaTime;
@@ -222,6 +225,8 @@ public class EnemyRifleman : MonoBehaviour {
 
             if (shootTimer > shootDelay)
             {
+                AudioSource.PlayClipAtPoint(shootSound, transform.position);
+
                 if (playerLeft == true)
                 {
                     playerInvincible = hitLeft.transform.GetComponent<MovementScript>().invincible;
@@ -243,7 +248,8 @@ public class EnemyRifleman : MonoBehaviour {
                     }
                     hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
                 }
-                
+
+                shootTimer = 0;
             }
         }
         else

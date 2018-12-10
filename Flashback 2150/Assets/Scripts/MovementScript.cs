@@ -32,6 +32,7 @@ public class MovementScript : MonoBehaviour
     [Header("Gun Values")]
     public float gunTimer;
     public float gunDelay;
+    public float shotDelay;
 
     [Header("Rolling Values")]
     public float rollingSpeed;
@@ -81,6 +82,18 @@ public class MovementScript : MonoBehaviour
     public GameObject ledgeUnderneath;
     public float hangTimer;
     public float hangDelay;
+
+    [Header("Audio Timers")]
+    public float movementTimer;
+    public float runSoundDelay;
+    public float walkSoundDelay;
+
+    [Header("Audio Sources")]
+    public AudioSource playerAudioSource;
+    public AudioClip[] gunShot;
+    public AudioClip[] footStep;
+    public AudioClip landing;
+
 
     [Space(10)]
     //public Transform target;
@@ -586,12 +599,30 @@ public class MovementScript : MonoBehaviour
                             // Running movement for left and right keys
                             if (Input.GetKey(KeyCode.D))
                             {
+                                movementTimer += Time.deltaTime;
+                                if (movementTimer > runSoundDelay)
+                                {
+                                    int i = Random.Range(0, 2);
+
+                                    AudioSource.PlayClipAtPoint(footStep[i], transform.position);
+                                    movementTimer = 0;
+                                }
+
                                 transform.Translate(Vector3.right * Time.deltaTime * runningSpeed);
                                 rb.velocity = new Vector3(2f, -2f, 0);
                                 runTime += Time.deltaTime;
                             }
                             if (Input.GetKey(KeyCode.A))
                             {
+                                movementTimer += Time.deltaTime;
+                                if (movementTimer > runSoundDelay)
+                                {
+                                    int i = Random.Range(0, 2);
+
+                                    AudioSource.PlayClipAtPoint(footStep[i], transform.position);
+                                    movementTimer = 0;
+                                }
+
                                 transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
                                 rb.velocity = new Vector3(-2f, -2f, 0);
                                 runTime += Time.deltaTime;
@@ -622,22 +653,42 @@ public class MovementScript : MonoBehaviour
                 {
                     if (lookTime > walkTurnDelay)
                     {
-                        if (Input.GetKey(KeyCode.A))
+                        if (Input.GetKey(KeyCode.A) && runningOn == false)
                         {
                             transform.Translate(Vector3.left * Time.deltaTime);
                             //rb.AddForce(Vector3.left * walkSpeed);
+
+                            movementTimer += Time.deltaTime;
+                            if (movementTimer > walkSoundDelay)
+                            {
+                                int i = Random.Range(0, 2);
+
+                                AudioSource.PlayClipAtPoint(footStep[i], transform.position);
+                                movementTimer = 0;
+                            }
                         }
 
-                        if (Input.GetKey(KeyCode.D))
+                        if (Input.GetKey(KeyCode.D) && runningOn == false)
                         {
                             transform.Translate(Vector3.right * Time.deltaTime);
                             //rb.AddForce(Vector3.right * walkSpeed);
+
+                            movementTimer += Time.deltaTime;
+                            if (movementTimer > walkSoundDelay)
+                            {
+                                int i = Random.Range(0, 2);
+
+                                AudioSource.PlayClipAtPoint(footStep[i], transform.position);
+                                movementTimer = 0;
+                            }
                         }
 
                         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
-                        {
+                        {                           
                             lookTime = 0;
                         }
+
+
                     }
                 }
 
@@ -650,12 +701,30 @@ public class MovementScript : MonoBehaviour
                     {
                         if (Input.GetKey(KeyCode.A))
                         {
+                            movementTimer += Time.deltaTime;
+                            if (movementTimer > walkSoundDelay)
+                            {
+                                int i = Random.Range(0, 2);
+
+                                AudioSource.PlayClipAtPoint(footStep[i], transform.position);
+                                movementTimer = 0;
+                            }
+
                             transform.Translate(Vector3.left * Time.deltaTime);
                             //rb.AddForce(Vector3.left * walkSpeed);
                         }
 
                         if (Input.GetKey(KeyCode.D))
                         {
+                            movementTimer += Time.deltaTime;
+                            if (movementTimer > walkSoundDelay)
+                            {
+                                int i = Random.Range(0, 2);
+
+                                AudioSource.PlayClipAtPoint(footStep[i], transform.position);
+                                movementTimer = 0;
+                            }
+
                             transform.Translate(Vector3.right * Time.deltaTime);
                             //rb.AddForce(Vector3.right * walkSpeed);
                         }
@@ -761,14 +830,13 @@ public class MovementScript : MonoBehaviour
 
 
         Vector3 down = transform.TransformDirection(Vector3.down) * 1.2f;
-        Vector3 frontDown = new Vector3(transform.position.x + 0.38f, transform.position.y, transform.position.z);
-        Vector3 backDown = new Vector3(transform.position.x - 0.38f, transform.position.y, transform.position.z);
+        Vector3 frontDown = new Vector3(transform.position.x + 0.4f, transform.position.y, transform.position.z);
+        Vector3 backDown = new Vector3(transform.position.x - 0.4f, transform.position.y, transform.position.z);
         Vector3 gunHeight = new Vector3(playerNose.transform.position.x, transform.position.y + 0.5f, transform.position.z);
 
         Vector3 right = transform.TransformDirection(Vector3.right) * 15f;
         Vector3 left = transform.TransformDirection(Vector3.left) * 15f;
 
-        bool rayIntersectsSomething = Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
         bool gunLineOfSight = lookLeft == true ? Physics.Raycast(transform.position, left, 15f) : Physics.Raycast(transform.position, right, 15f);
 
         Debug.DrawRay(transform.position, down * 0.9f, Color.green);
@@ -784,10 +852,31 @@ public class MovementScript : MonoBehaviour
         {
             Debug.DrawRay(gunHeight, left, Color.green);
         }
+     
+        bool feetRay = Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
 
+        //bool feetRay = Physics.Raycast(transform.position, down, out feetHit);
+        //bool feetRayFront = Physics.Raycast(transform.position, frontDown, out feetHitFront);
+        //bool feetRayBack = Physics.Raycast(transform.position, backDown, out feetHitBack);
 
-        if (rayIntersectsSomething)
+        RaycastHit feetHit;
+        Physics.Raycast(transform.position, down * 1.2f, out feetHit);
+
+        RaycastHit feetHitFront;
+        Physics.Raycast(transform.position, frontDown * 1.2f, out feetHitFront);
+
+        RaycastHit feetHitBack;
+        Physics.Raycast(transform.position, backDown * 1.2f, out feetHitBack);
+
+        if (feetRay)
         {
+            if (midAir == true)
+            {
+                if (inJump == false && (feetHit.transform.tag == "Floor" || feetHitFront.transform.tag == "Floor" || feetHitBack.transform.tag == "Floor"))
+                {
+                    AudioSource.PlayClipAtPoint(landing, transform.position);
+                }
+            }
             midAir = false;
         }
 
@@ -804,30 +893,63 @@ public class MovementScript : MonoBehaviour
 
         }
 
+
+
         if (gunAim == true && Input.GetKey(KeyCode.Space))
         {
-            RaycastHit hit;
-            if (Physics.Raycast(gameObject.transform.position, lookLeft == true ? left * 15f : right * 15f, out hit))
+            if (shotDelay < gunTimer)
             {
-                Debug.Log(hit.transform.name);
-            }
-
-            Animator enemyAnimations;
-            if (hit.transform.tag == "Enemy")
-            {
-                enemyAnimations = hit.transform.gameObject.GetComponentInParent<Animator>();
-
-                if (lookLeft == true)
+                RaycastHit hit;
+                if (Physics.Raycast(gameObject.transform.position, lookLeft == true ? left * 15f : right * 15f, out hit))
                 {
-                    enemyAnimations.SetTrigger("hitFromRight");
-                }
-                else
-                {
-                    enemyAnimations.SetTrigger("hitFromLeft");
+                    Debug.Log(hit.transform.name);
                 }
 
-                hit.transform.GetComponent<EnemyCrawler>().enabled = false;
-                hit.transform.GetComponent<EnemyRifleman>().enabled = false;
+                int i = Random.Range(0, 2);
+
+                Animator enemyAnimations;
+                AudioSource.PlayClipAtPoint(gunShot[i], transform.position);
+
+
+                // playerAudioSource.Play(0);
+
+                if (hit.transform.tag == "Enemy" && hit.transform.GetComponent<EnemyRifleman>().enabled == true)
+                {
+                    enemyAnimations = hit.transform.gameObject.GetComponentInParent<Animator>();
+
+                    hit.transform.GetComponent<EnemyRifleman>().enemyHurt.Play(0);
+
+                    if (lookLeft == true)
+                    {
+                        enemyAnimations.SetTrigger("hitFromRight");
+                    }
+                    else
+                    {
+                        enemyAnimations.SetTrigger("hitFromLeft");
+                    }
+
+                    hit.transform.GetComponent<EnemyRifleman>().enabled = false;
+                }
+
+                if (hit.transform.tag == "Enemy" && hit.transform.GetComponent<EnemyCrawler>().enabled == true)
+                {
+                    enemyAnimations = hit.transform.gameObject.GetComponentInParent<Animator>();
+
+                    hit.transform.GetComponent<EnemyCrawler>().enemyHurt.Play(0);
+
+                    if (lookLeft == true)
+                    {
+                        enemyAnimations.SetTrigger("hitFromRight");
+                    }
+                    else
+                    {
+                        enemyAnimations.SetTrigger("hitFromLeft");
+                    }
+
+                    hit.transform.GetComponent<EnemyCrawler>().enabled = false;
+                }
+
+                gunTimer = 0;
             }
         }
 
@@ -855,7 +977,7 @@ public class MovementScript : MonoBehaviour
 
         //if (collision.gameObject.tag == "Floors")
         //{
-        if (impactSpeed.y > 0.1)
+        if (impactSpeed.y > 1)
         {
             if (gunMode == true)
             {
