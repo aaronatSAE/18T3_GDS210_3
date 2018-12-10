@@ -8,6 +8,7 @@ TextureImporter:
     21300006: Idle_1
     21300008: Idle_2
     21300010: Idle_3
+    21300012: NPC V2 idle animation_0
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -167,6 +168,26 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: c7f12f51e96b69c47aef4f4e4c20d6b2
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NPC V2 idle animation_0
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 651
+        width: 36
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59bfb243c5d5ae143b482de1f7e015eb
       vertices: []
       indices: 
       edges: []

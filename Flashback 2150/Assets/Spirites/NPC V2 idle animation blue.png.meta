@@ -5,6 +5,10 @@ TextureImporter:
     21300000: Idle_1
     21300002: Idle_2
     21300004: Idle_3
+    21300006: NPC V2 idle animation blue_0
+    21300008: NPC V2 idle animation blue_1
+    21300010: NPC V2 idle animation blue_2
+    21300012: NPC V2 idle animation blue_3
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -109,7 +113,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Idle_1
+      name: NPC V2 idle animation blue_0
       rect:
         serializedVersion: 2
         x: 162
@@ -123,18 +127,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7dc84f03d7eb9d4fbbf2914a8640884
+      spriteID: 8d64ce8744824ff4cb7f025923033513
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle_2
+      name: NPC V2 idle animation blue_1
       rect:
         serializedVersion: 2
-        x: 547
+        x: 546
         y: 462
-        width: 59
+        width: 60
         height: 222
       alignment: 7
       pivot: {x: 0.5, y: 0}
@@ -143,13 +147,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 891ef8b181dc1574da103ff582d56ed1
+      spriteID: e007d65c8aff6a64daa8006917e7c922
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Idle_3
+      name: NPC V2 idle animation blue_2
       rect:
         serializedVersion: 2
         x: 162
@@ -163,7 +167,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f24361bae2b12b14aa72a137173ba5f6
+      spriteID: 9e02311fc9b33e64fa244c7da82d97f8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: NPC V2 idle animation blue_3
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 651
+        width: 36
+        height: 39
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b85e597adb40e04a8900209dba36150
       vertices: []
       indices: 
       edges: []
