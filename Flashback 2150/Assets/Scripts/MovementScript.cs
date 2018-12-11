@@ -58,6 +58,9 @@ public class MovementScript : MonoBehaviour
     public float rJumpDirection;
     float rJumpSpeed;
 
+    public float rJumpTimer;
+    public float rJumpDelay;
+
     [Header("Leaping Jump Values")]
     public float lJumpHeight;
     public float lJumpPropulsion;
@@ -93,6 +96,7 @@ public class MovementScript : MonoBehaviour
     public AudioClip[] gunShot;
     public AudioClip[] footStep;
     public AudioClip landing;
+    public AudioClip jumping;
 
 
     [Space(10)]
@@ -276,6 +280,7 @@ public class MovementScript : MonoBehaviour
                     GetComponent<Rigidbody>().isKinematic = false;
                     ledgeCollided = false;
                     ledgeHang = false;
+                    AudioSource.PlayClipAtPoint(jumping, transform.position);
 
                     if (lookLeft == false)
                     {
@@ -397,7 +402,7 @@ public class MovementScript : MonoBehaviour
             /* Jump Mechanics*/
             /* Stationary Jump */
             // Sets running jump direction to 0 incase of reasons.
-            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A) == false && Input.GetKey(KeyCode.D) == false))
+            if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.D) || (Input.GetKey(KeyCode.A) == false && Input.GetKey(KeyCode.D) == false && inJump == false))
             {
                 rJumpDirection = 0;
             }
@@ -425,6 +430,11 @@ public class MovementScript : MonoBehaviour
                 {
                     midAir = true;
                     inJump = true;
+
+                    if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
+                    {
+                        AudioSource.PlayClipAtPoint(jumping, transform.position);
+                    }
                 }
             }
 
@@ -752,6 +762,8 @@ public class MovementScript : MonoBehaviour
 
         else
         {
+            rJumpTimer += Time.deltaTime;
+
             if (inJump == true)
             {
                 airTime += Time.deltaTime;
@@ -786,41 +798,49 @@ public class MovementScript : MonoBehaviour
                 /* Running Jump Test */
                 else
                 {
-                    if (airTime < jumpDuration)
+                    if (rJumpTimer > rJumpDelay)
                     {
-                        if (runTime > rJumpRunUp)
-                        {
-                            //rb.AddForce(new Vector3(rJumpDirection, rJumpHeight) * rJumpSpeed);
-                            // rJumpDirection value = propulsion -> approx. = 0.075
-                            // rJumpHeigh value approx. = 0.075
-
-                            rb.velocity = new Vector3(rJumpDirection, rJumpHeight, 0);
-
-                            // rJumpDirection value approx. = 
-                            // rJumpHeight value approx. = 
-                        }
-
-                        // Above = Running Jump.
-                        // Below = Leap Jump.
-
-                        else
-                        {
-                            //rb.AddForce(new Vector3(lJumpDirection, lJumpHeight) * lJumpSpeed);
-                            // lJumpDirection value approx. = 0.055
-                            // lJumpHeight value approx. = 0.095
-
-                            rb.velocity = new Vector3(lJumpDirection, lJumpHeight, 0);
-                            // lJumpDirection value approx. = 0.055
-                            // lJumpHeight value approx. = 0.095
-                        }
+                        rJumpTimer = 0;
                     }
+                }
+            }
+
+            if (rJumpTimer < rJumpDelay)
+            {
+                if (airTime < jumpDuration)
+                {
+                    if (runTime > rJumpRunUp)
+                    {
+                        //rb.AddForce(new Vector3(rJumpDirection, rJumpHeight) * rJumpSpeed);
+                        // rJumpDirection value = propulsion -> approx. = 0.075
+                        // rJumpHeigh value approx. = 0.075
+
+                        rb.velocity = new Vector3(rJumpDirection, rJumpHeight, 0);
+
+                        // rJumpDirection value approx. = 
+                        // rJumpHeight value approx. = 
+                    }
+
+                    // Above = Running Jump.
+                    // Below = Leap Jump.
 
                     else
                     {
-                        airTime = 0;
-                        runTime = 0;
-                        inJump = false;
+                        //rb.AddForce(new Vector3(lJumpDirection, lJumpHeight) * lJumpSpeed);
+                        // lJumpDirection value approx. = 0.055
+                        // lJumpHeight value approx. = 0.095
+
+                        rb.velocity = new Vector3(lJumpDirection, lJumpHeight, 0);
+                        // lJumpDirection value approx. = 0.055
+                        // lJumpHeight value approx. = 0.095
                     }
+                }
+
+                else
+                {
+                    airTime = 0;
+                    runTime = 0;
+                    inJump = false;
                 }
             }
         }
