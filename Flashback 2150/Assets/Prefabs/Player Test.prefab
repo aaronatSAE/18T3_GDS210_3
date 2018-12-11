@@ -121,7 +121,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1492752579861162}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.83, y: -1.29, z: 7.0965276}
+  m_LocalPosition: {x: 5.09, y: -1.29, z: 7.0965276}
   m_LocalScale: {x: 0.75, y: 2, z: 0.75}
   m_Children:
   - {fileID: 4402364025077180}
@@ -465,6 +465,8 @@ MonoBehaviour:
   rJumpHeight: 3.8
   rJumpPropulsion: 5
   rJumpDirection: 0
+  rJumpTimer: 0
+  rJumpDelay: 0.2
   lJumpHeight: 2.8
   lJumpPropulsion: 3
   lJumpDirection: 0
@@ -493,6 +495,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f6fce1e583978504e858a4f240a74ba3, type: 3}
   - {fileID: 8300000, guid: 47865a8049018f04f95ddb03ed28f1db, type: 3}
   landing: {fileID: 8300000, guid: 9c82564117f54a2499ff60f7e4e30a8e, type: 3}
+  jumping: {fileID: 8300000, guid: b0ef5b24251e84795bfa02ee1fad9e10, type: 3}
   rollingRight: 0
   rollingLeft: 0
   lookLeft: 0
@@ -529,6 +532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collided: 0
   ledgeGrabbed: {fileID: 0}
+  playerLeft: 0
+  ledgeLeft: 0
 --- !u!135 &135870430377602874
 SphereCollider:
   m_ObjectHideFlags: 1
