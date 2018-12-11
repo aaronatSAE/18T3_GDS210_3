@@ -7,9 +7,6 @@ public class LedgeCollision : MonoBehaviour {
     public bool collided;
     public GameObject ledgeGrabbed;
 
-    public bool playerLeft;
-    public bool ledgeLeft;
-
 	// Use this for initialization
 	void Start ()
     {
@@ -26,16 +23,8 @@ public class LedgeCollision : MonoBehaviour {
     {
         if (other.tag == "LedgeCollider")
         {
-            ledgeLeft = other.GetComponent<FootDetection>().left;
-            playerLeft = GetComponentInParent<MovementScript>().lookLeft;
-
-            if (ledgeLeft != playerLeft)
-            {
-                collided = true;
-                ledgeGrabbed = other.gameObject;
-            }
-
-            
+            collided = true;
+            ledgeGrabbed = other.gameObject;
         }
     }
 
@@ -44,6 +33,7 @@ public class LedgeCollision : MonoBehaviour {
         if (other.tag == "LedgeCollider")
         {
             collided = false;
+
         }
     }
 }

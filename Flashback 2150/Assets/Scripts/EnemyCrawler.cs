@@ -28,14 +28,9 @@ public class EnemyCrawler : MonoBehaviour {
     public string ledgeDirection;
 
     public AudioSource enemyHurt;
-    public AudioClip zapNoise;
-    public AudioClip enemyMoving;
 
     public float zapTimer;
     public float zapDelay;
-
-    public float rSoundTimer;
-    public float rSoundDelay;
 
 	// Use this for initialization
 	void Start ()
@@ -79,7 +74,6 @@ public class EnemyCrawler : MonoBehaviour {
         RaycastHit hitRight;
 
         zapTimer += Time.deltaTime;
-        rSoundTimer += Time.deltaTime;
 
         // Raycast checks left from enemy.
         if (Physics.Raycast(transform.position, left * 15f, out hitLeft))
@@ -101,12 +95,6 @@ public class EnemyCrawler : MonoBehaviour {
                         else
                         {
                             gameObject.transform.Translate(-movementSpeed, 0, 0);
-
-                            if (rSoundTimer > rSoundDelay)
-                            {
-                                AudioSource.PlayClipAtPoint(enemyMoving, transform.position);
-                                rSoundTimer = 0;
-                            }
                         }
                     }
                 }
@@ -165,12 +153,6 @@ public class EnemyCrawler : MonoBehaviour {
                         else
                         {
                             gameObject.transform.Translate( movementSpeed, 0, 0);
-
-                            if (rSoundTimer > rSoundDelay)
-                            {
-                                AudioSource.PlayClipAtPoint(enemyMoving, transform.position);
-                                rSoundTimer = 0;
-                            }
                         }
                     }
                 }
@@ -201,7 +183,6 @@ public class EnemyCrawler : MonoBehaviour {
                         {
                             hitRight.transform.GetComponent<PlayerHealth>().shield -= 1;
                             hitRight.rigidbody.velocity = new Vector3(hitRight.rigidbody.velocity.x + knockbackDistance, hitRight.rigidbody.velocity.y + knockbackHeight, hitRight.rigidbody.velocity.z);
-                            AudioSource.PlayClipAtPoint(zapNoise, transform.position);
                         }
                         hitRight.transform.GetComponent<MovementScript>().gracePeriod = true;
                         zapTimer = 0;

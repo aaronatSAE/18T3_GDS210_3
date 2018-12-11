@@ -437,8 +437,6 @@ MonoBehaviour:
   hitRightGO: {fileID: 0}
   ledgeDirection: 
   enemyHurt: {fileID: 0}
-  zapTimer: 0
-  zapDelay: 0
 --- !u!114 &114169743651579034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -462,8 +460,8 @@ MonoBehaviour:
   playerRight: 0
   playerLeft: 0
   playerInvincible: 0
-  knockbackHeight: 2
-  knockbackDistance: 2
+  knockbackHeight: 1
+  knockbackDistance: 1
   enemyLook: {fileID: 1088758789780730}
   nose: {fileID: 1944270148785374}
   noseMaterial: {fileID: 0}
