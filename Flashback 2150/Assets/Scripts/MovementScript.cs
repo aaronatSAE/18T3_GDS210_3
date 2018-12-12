@@ -11,6 +11,7 @@ public class MovementScript : MonoBehaviour
     public float jumpDuration;
     public GameObject playerNose;
     public Material noseMaterial;
+    public GameObject playerCanvas;
 
     [Header("State Bools")]
     bool runningOn;
@@ -194,6 +195,8 @@ public class MovementScript : MonoBehaviour
                     gunMode = !gunMode;
                     gunAim = false;
                     gunTimer = 0;
+                    GetComponent<Animator>().SetTrigger("Stationary");
+                    GetComponent<Animator>().ResetTrigger("GunMode");
 
                 }
                 else
@@ -201,7 +204,9 @@ public class MovementScript : MonoBehaviour
                     gunMode = !gunMode;
                     gunAim = true;
                     gunTimer = 0;
-
+                    GetComponent<Animator>().SetTrigger("GunMode");
+                    GetComponent<Animator>().SetTrigger("GunAim");
+                    GetComponent<Animator>().ResetTrigger("Stationary");
                 }
             }
 
@@ -213,6 +218,8 @@ public class MovementScript : MonoBehaviour
                     gunAim = true;
                     gunTimer = 0;
 
+                    GetComponent<Animator>().SetTrigger("GunAim");
+                    GetComponent<Animator>().ResetTrigger("GunSide");
                 }
             }
 
@@ -328,6 +335,7 @@ public class MovementScript : MonoBehaviour
                 else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A) == false)
                 {
                     lookLeft = false;
+
                 }
             }
 
@@ -335,12 +343,12 @@ public class MovementScript : MonoBehaviour
             if (lookLeft == true)
             {
                 lookingAnimation.SetBool("left?", true);
-                //lookSprite.SetBool("left?", true);
+                lookSprite.SetBool("left?", true);
             }
             else
             {
                 lookingAnimation.SetBool("left?", false);
-                //lookSprite.SetBool("left?", false);
+                lookSprite.SetBool("left?", false);
             }
 
 
@@ -666,6 +674,9 @@ public class MovementScript : MonoBehaviour
                         if (Input.GetKey(KeyCode.A) && runningOn == false)
                         {
                             transform.Translate(Vector3.left * Time.deltaTime);
+                            GetComponent<Animator>().SetTrigger("Walk");
+                            GetComponent<Animator>().ResetTrigger("Stationary");
+
                             //rb.AddForce(Vector3.left * walkSpeed);
 
                             movementTimer += Time.deltaTime;
@@ -678,10 +689,12 @@ public class MovementScript : MonoBehaviour
                             }
                         }
 
-                        if (Input.GetKey(KeyCode.D) && runningOn == false)
+                        else if (Input.GetKey(KeyCode.D) && runningOn == false)
                         {
                             transform.Translate(Vector3.right * Time.deltaTime);
                             //rb.AddForce(Vector3.right * walkSpeed);
+                            GetComponent<Animator>().SetTrigger("Walk");
+                            GetComponent<Animator>().ResetTrigger("Stationary");
 
                             movementTimer += Time.deltaTime;
                             if (movementTimer > walkSoundDelay)
@@ -691,6 +704,12 @@ public class MovementScript : MonoBehaviour
                                 AudioSource.PlayClipAtPoint(footStep[i], transform.position);
                                 movementTimer = 0;
                             }
+                        }
+
+                        else
+                        {
+                            GetComponent<Animator>().ResetTrigger("Walk");
+                            GetComponent<Animator>().SetTrigger("Stationary");
                         }
 
                         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
