@@ -13,6 +13,9 @@ public class MovementScript : MonoBehaviour
     public Material noseMaterial;
     public GameObject playerCanvas;
 
+    public float animationTimer;
+    public float jumpAnimationDelay;
+
     [Header("State Bools")]
     bool runningOn;
     public bool crouchOn;
@@ -154,9 +157,8 @@ public class MovementScript : MonoBehaviour
             if (ledgeDelay > ledgeTimer)
             {
                 ledgeGrabbed = ledgeCollider.GetComponent<LedgeCollision>().ledgeGrabbed;
-
-
                 gameObject.transform.parent = ledgeGrabbed.transform;
+                GetComponent<Animator>().SetTrigger("LedgeHold");
 
                 if (lookLeft == false)
                 {
@@ -190,23 +192,26 @@ public class MovementScript : MonoBehaviour
             /* Gun Mode/Aim ON/OFF */
             if (Input.GetKey(KeyCode.Tab))
             {
-                if (gunMode == true)
+                if (ledgeCollided == false)
                 {
-                    gunMode = !gunMode;
-                    gunAim = false;
-                    gunTimer = 0;
-                    GetComponent<Animator>().SetTrigger("Stationary");
-                    GetComponent<Animator>().ResetTrigger("GunMode");
+                    if (gunMode == true)
+                    {
+                        gunMode = !gunMode;
+                        gunAim = false;
+                        gunTimer = 0;
+                        GetComponent<Animator>().SetTrigger("Stationary");
+                        GetComponent<Animator>().ResetTrigger("GunMode");
 
-                }
-                else
-                {
-                    gunMode = !gunMode;
-                    gunAim = true;
-                    gunTimer = 0;
-                    GetComponent<Animator>().SetTrigger("GunMode");
-                    GetComponent<Animator>().SetTrigger("GunAim");
-                    GetComponent<Animator>().ResetTrigger("Stationary");
+                    }
+                    else
+                    {
+                        gunMode = !gunMode;
+                        gunAim = true;
+                        gunTimer = 0;
+                        GetComponent<Animator>().SetTrigger("GunMode");
+                        GetComponent<Animator>().SetTrigger("GunAim");
+                        GetComponent<Animator>().ResetTrigger("Stationary");
+                    }
                 }
             }
 
@@ -227,6 +232,8 @@ public class MovementScript : MonoBehaviour
             if (gunAim == true && ((lookLeft == true && Input.GetKey(KeyCode.A) || lookLeft == false && Input.GetKey(KeyCode.D))))
             {
                 gunAim = false;
+                GetComponent<Animator>().ResetTrigger("GunAim");
+                GetComponent<Animator>().SetTrigger("GunSide");
                 gunTimer = 0;
             }
 
@@ -388,20 +395,32 @@ public class MovementScript : MonoBehaviour
                 // Allows the lookTime timer to work while in crouch mode.
                 lookTime += Time.deltaTime;
 
+                GetComponent<Animator>().SetTrigger("Crouch");
+                GetComponent<Animator>().ResetTrigger("Stationary");
+
                 //The rest of this if else statement controls the scale and position of the player while crouching and uncrouching.
-                transform.localScale = new Vector3(1.1f, 1f, 1.1f);
+                //transform.localScale = new Vector3(1.1f, 1f, 1.1f);
+
+                GetComponent<BoxCollider>().size = new Vector3(1f, 0.38f, 1f);
+                GetComponent<BoxCollider>().center = new Vector3(0f, -0.31f, 0f);
+
                 if (crouchToggle == false)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
+                    //transform.position = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
                     crouchToggle = true;
                 }
             }
             else
             {
-                transform.localScale = new Vector3(0.75f, 2, 0.75f);
+                //transform.localScale = new Vector3(0.75f, 2, 0.75f);
+                GetComponent<BoxCollider>().size = new Vector3(1f, 1f, 1f);
+                GetComponent<BoxCollider>().center = new Vector3(0f, 0f, 0f);
+
+                GetComponent<Animator>().ResetTrigger("Crouch");
+
                 if (crouchToggle == true)
                 {
-                    transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+                    //transform.position = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
                     crouchToggle = false;
                 }
             }
@@ -438,10 +457,12 @@ public class MovementScript : MonoBehaviour
                 {
                     midAir = true;
                     inJump = true;
+                    GetComponent<Animator>().SetTrigger("Jump");
 
                     if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.Space))
                     {
                         AudioSource.PlayClipAtPoint(jumping, transform.position);
+                        GetComponent<Animator>().ResetTrigger("Stationary");
                     }
                 }
             }
@@ -788,16 +809,21 @@ public class MovementScript : MonoBehaviour
                 airTime += Time.deltaTime;
                 midAir = true;
 
+                animationTimer += Time.deltaTime;
+
                 /* Stationary Jump */
                 if (runningOn == false)
                 {
                     if (airTime < jumpDuration)
                     {
+                        if (animationTimer > jumpAnimationDelay)
+                        {
                         //rb.AddForce(new Vector3(0, sJumpHeight) * sJumpSpeed);
                         //sJumpHeight value approx. = 0.075
 
                         rb.velocity = new Vector3(0, sJumpHeight, 0);
                         //sJumpHeight value approx. = 5
+                        }
                     }
                     // Dictates the jump height.
 
@@ -806,6 +832,7 @@ public class MovementScript : MonoBehaviour
                         //if (airTime > jumpDelay)
                         //{
                         airTime = 0;
+                        animationTimer = 0;
                         inJump = false;
                         //}
                     }

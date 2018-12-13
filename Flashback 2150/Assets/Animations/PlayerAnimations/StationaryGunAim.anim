@@ -19,8 +19,12 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: 561d6bce26430964eac61257d329ba7d, type: 3}
+      value: {fileID: 21300012, guid: 5b97c5958889f2d45977c32c1b37a8e4, type: 3}
+    - time: 0.083333336
+      value: {fileID: 21300014, guid: 5b97c5958889f2d45977c32c1b37a8e4, type: 3}
     - time: 0.25
+      value: {fileID: 21300000, guid: 561d6bce26430964eac61257d329ba7d, type: 3}
+    - time: 0.41666666
       value: {fileID: 21300000, guid: 561d6bce26430964eac61257d329ba7d, type: 3}
     attribute: m_Sprite
     path: PlayerCanvas/arnold_walking (1)
@@ -41,6 +45,8 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
+    - {fileID: 21300012, guid: 5b97c5958889f2d45977c32c1b37a8e4, type: 3}
+    - {fileID: 21300014, guid: 5b97c5958889f2d45977c32c1b37a8e4, type: 3}
     - {fileID: 21300000, guid: 561d6bce26430964eac61257d329ba7d, type: 3}
     - {fileID: 21300000, guid: 561d6bce26430964eac61257d329ba7d, type: 3}
   m_AnimationClipSettings:
@@ -48,7 +54,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.26666668
+    m_StopTime: 0.43333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

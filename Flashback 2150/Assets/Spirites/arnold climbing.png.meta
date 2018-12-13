@@ -1,12 +1,24 @@
 fileFormatVersion: 2
 guid: 0f897ca511d8490439aada17056eaf29
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: arnold climbing_0
+    21300002: arnold climbing_1
+    21300004: arnold climbing_2
+    21300006: arnold climbing_3
+    21300008: arnold climbing_4
+    21300010: arnold climbing_5
+    21300012: arnold climbing_6
+    21300014: arnold climbing_7
+    21300016: arnold climbing_8
+    21300018: arnold climbing_9
+    21300020: arnold climbing_10
+    21300022: arnold climbing_11
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 1
+    enableMipMap: 0
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -34,24 +46,24 @@ TextureImporter:
     filterMode: -1
     aniso: -1
     mipBias: -100
-    wrapU: -1
-    wrapV: -1
+    wrapU: 1
+    wrapV: 1
     wrapW: -1
-  nPOTScale: 1
+  nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 0
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 292
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
-  alphaIsTransparency: 0
+  alphaIsTransparency: 1
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 8
   textureShape: 1
   singleChannelComponent: 0
   maxTextureSizeSet: 0
@@ -69,13 +81,264 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: arnold climbing_0
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 1242
+        width: 57
+        height: 225
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f27c741a1a5c6554e8d2401c6ca4e922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_1
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 1242
+        width: 60
+        height: 222
+      alignment: 9
+      pivot: {x: 0.42942506, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f18e4b48907af384fa8cbbb479fb6a7b
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_2
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 1242
+        width: 66
+        height: 222
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8aa16f5c73466f499f0e7c71d34e06a
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_3
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 858
+        width: 78
+        height: 204
+      alignment: 9
+      pivot: {x: 0.4457235, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a7821eca96910b4592a886a7f369799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_4
+      rect:
+        serializedVersion: 2
+        x: 540
+        y: 858
+        width: 78
+        height: 189
+      alignment: 9
+      pivot: {x: 0.4425307, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c658821334210e469aa65c72135c12e
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_5
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 858
+        width: 63
+        height: 171
+      alignment: 9
+      pivot: {x: 0.6304467, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b6dbde768cbcfe54b96438ddcf7acc69
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_6
+      rect:
+        serializedVersion: 2
+        x: 153
+        y: 474
+        width: 57
+        height: 168
+      alignment: 9
+      pivot: {x: 0.7000151, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0810fad6975ca2248af5925aec8639f8
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_7
+      rect:
+        serializedVersion: 2
+        x: 537
+        y: 473
+        width: 63
+        height: 172
+      alignment: 9
+      pivot: {x: 0.64025104, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce4a075a9fc4683499774821f12da5e9
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_8
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 474
+        width: 72
+        height: 192
+      alignment: 9
+      pivot: {x: 0.47229087, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20538dbdf4252a84fbc78499a95b3a13
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_9
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 90
+        width: 51
+        height: 234
+      alignment: 9
+      pivot: {x: 0.65648246, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 475b52c5bde92ff4dbbe0cffbdc054d1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_10
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 90
+        width: 51
+        height: 234
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6fb4c2c351f84a45bc84e601f94b240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: arnold climbing_11
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 404
+        width: 15
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf7991a521400bd43aebf5a19a5a2ccf
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 077f55c60ad4be1438cc5674939a7368
     vertices: []
     indices: 
     edges: []
