@@ -29,7 +29,7 @@ AnimationClip:
     - time: 1
       value: {fileID: 21300018, guid: 5b97c5958889f2d45977c32c1b37a8e4, type: 3}
     attribute: m_Sprite
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -40,7 +40,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3580230621
+      path: 1869969286
       attribute: 0
       script: {fileID: 0}
       typeID: 212

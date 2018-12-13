@@ -27,9 +27,9 @@ AnimationClip:
     - time: 0.25
       value: {fileID: 21300018, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
     - time: 0.33333334
-      value: {fileID: 21300010, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
+      value: {fileID: 21300000, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
     attribute: m_Sprite
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -40,7 +40,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3580230621
+      path: 1869969286
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -51,7 +51,7 @@ AnimationClip:
     - {fileID: 21300014, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
     - {fileID: 21300016, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
     - {fileID: 21300018, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
-    - {fileID: 21300010, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
+    - {fileID: 21300000, guid: 4e8b5ab0053e57e41b1560db10d5d896, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

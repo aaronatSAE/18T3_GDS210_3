@@ -13,6 +13,11 @@ public class MovementScript : MonoBehaviour
     public Material noseMaterial;
     public GameObject playerCanvas;
 
+    public string front;
+    public string mid;
+    public string back;
+
+
     public float animationTimer;
     public float jumpAnimationDelay;
 
@@ -182,6 +187,7 @@ public class MovementScript : MonoBehaviour
         else
         {
             ledgeHang = false;
+            GetComponent<Animator>().ResetTrigger("LedgeHold");
             GetComponent<Rigidbody>().isKinematic = false;
         }
 
@@ -374,6 +380,8 @@ public class MovementScript : MonoBehaviour
             /* Crouch Button*/
             if (rollingLeft == false && rollingRight == false)
             {
+                GetComponent<Animator>().ResetTrigger("Roll");
+
                 if (midAir == false)
                 {
                     if (Input.GetKey(KeyCode.C))
@@ -516,7 +524,7 @@ public class MovementScript : MonoBehaviour
                                 if (lookTime > crouchTurnDelay)
                                 {
                                     timeRolling = 0;
-                                    rollingRight = true;
+                                    rollingRight = true;                                 
                                 }
                             }
                         }
@@ -562,6 +570,7 @@ public class MovementScript : MonoBehaviour
             if (rollingLeft == true || rollingRight == true)
             {
                 lookTime = 0;
+                GetComponent<Animator>().SetTrigger("Roll");
             }
 
             timeRolling += Time.deltaTime;
@@ -806,6 +815,8 @@ public class MovementScript : MonoBehaviour
 
             if (inJump == true)
             {
+                GetComponent<Animator>().ResetTrigger("Stationary");
+
                 airTime += Time.deltaTime;
                 midAir = true;
 
@@ -905,9 +916,9 @@ public class MovementScript : MonoBehaviour
 
         bool gunLineOfSight = lookLeft == true ? Physics.Raycast(transform.position, left, 15f) : Physics.Raycast(transform.position, right, 15f);
 
-        Debug.DrawRay(transform.position, down * 0.9f, Color.green);
-        Debug.DrawRay(frontDown, down * 0.9f, Color.red);
-        Debug.DrawRay(backDown, down * 0.9f, Color.cyan);
+        Debug.DrawRay(transform.position, down * 1.2f, Color.green);
+        Debug.DrawRay(frontDown, down * 1.2f, Color.red);
+        Debug.DrawRay(backDown, down * 1.2f, Color.cyan);
         // Raycasts bottom of player to detect floor.
 
         if (lookLeft == false)
@@ -918,8 +929,12 @@ public class MovementScript : MonoBehaviour
         {
             Debug.DrawRay(gunHeight, left, Color.green);
         }
-     
-        bool feetRay = Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
+
+        Vector3 center = GetComponent<BoxCollider>().center;
+
+        bool feetRay = crouchOn == false ? Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f) 
+            : Physics.Raycast(center, down, 1f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
+
 
         //bool feetRay = Physics.Raycast(transform.position, down, out feetHit);
         //bool feetRayFront = Physics.Raycast(transform.position, frontDown, out feetHitFront);
@@ -929,13 +944,18 @@ public class MovementScript : MonoBehaviour
         Physics.Raycast(transform.position, down * 1.2f, out feetHit);
 
         RaycastHit feetHitFront;
-        Physics.Raycast(transform.position, frontDown * 1.2f, out feetHitFront);
+        Physics.Raycast(frontDown, down * 1.2f, out feetHitFront);
 
         RaycastHit feetHitBack;
-        Physics.Raycast(transform.position, backDown * 1.2f, out feetHitBack);
+        Physics.Raycast(backDown, down * 1.2f, out feetHitBack);
 
         if (feetRay)
         {
+            front = feetHitFront.transform.name;
+            mid = feetHit.transform.name;
+            back = feetHitBack.transform.name;
+
+
             if (midAir == true)
             {
                 if (inJump == false && (feetHit.transform.tag == "Floor" || feetHitFront.transform.tag == "Floor" || feetHitBack.transform.tag == "Floor"))
@@ -943,7 +963,10 @@ public class MovementScript : MonoBehaviour
                     AudioSource.PlayClipAtPoint(landing, transform.position);
                 }
             }
+
+            // GetComponent<Animator>().SetTrigger("Stationary");
             midAir = false;
+            GetComponent<Animator>().ResetTrigger("Jump");
         }
 
         // Above = Floor Detected = On The Ground

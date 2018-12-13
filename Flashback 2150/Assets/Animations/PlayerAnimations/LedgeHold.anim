@@ -38,7 +38,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
   m_ScaleCurves: []
   m_FloatCurves: []
   m_PPtrCurves:
@@ -48,7 +48,7 @@ AnimationClip:
     - time: 0.083333336
       value: {fileID: 21300020, guid: 0f897ca511d8490439aada17056eaf29, type: 3}
     attribute: m_Sprite
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
     classID: 212
     script: {fileID: 0}
   m_SampleRate: 60
@@ -59,14 +59,14 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 3580230621
+      path: 1869969286
       attribute: 0
       script: {fileID: 0}
       typeID: 212
       customType: 23
       isPPtrCurve: 1
     - serializedVersion: 2
-      path: 3580230621
+      path: 1869969286
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -121,7 +121,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -149,7 +149,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -177,7 +177,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: PlayerCanvas/arnold_walking (1)
+    path: PlayerCanvas/Rolling EGO/arnold_walking (1)
     classID: 4
     script: {fileID: 0}
   m_EulerEditorCurves: []
