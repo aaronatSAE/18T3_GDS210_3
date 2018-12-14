@@ -5795,6 +5795,12 @@ Prefab:
       propertyPath: emptyLedge
       value: 
       objectReference: {fileID: 512260091}
+    - target: {fileID: 212424762827915448, guid: a1a18401084c13b479edac15bf3ca812,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 7993e23f3d8593b4ebb71b195f4ff93b,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a18401084c13b479edac15bf3ca812, type: 2}
   m_IsPrefabAsset: 0
