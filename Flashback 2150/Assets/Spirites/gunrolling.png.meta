@@ -1,14 +1,15 @@
 fileFormatVersion: 2
-guid: edbaf8561eb93094a8c59515124ad25d
+guid: f850aa2715b0c8e43ae3ad3c04030292
 TextureImporter:
   fileIDToRecycleName:
-    21300000: New_Piskel_(6)_0
-    21300002: New_Piskel_(6)_1
-    21300004: New_Piskel_(6)_2
-    21300006: New_Piskel_(6)_3
-    21300008: New_Piskel_(6)_4
-    21300010: New_Piskel_(6)_5
-    21300012: New_Piskel_(6)_6
+    21300000: gunrolling_0
+    21300002: gunrolling_1
+    21300004: gunrolling_2
+    21300006: gunrolling_3
+    21300008: gunrolling_4
+    21300010: gunrolling_5
+    21300012: gunrolling_6
+    21300014: gunrolling_7
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -52,7 +53,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 308
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -87,139 +88,17 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: Windows Store Apps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: New_Piskel_(6)_0
+      name: gunrolling_0
       rect:
         serializedVersion: 2
-        x: 415
-        y: 2383
-        width: 267
-        height: 235
-      alignment: 9
-      pivot: {x: 0.48560485, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cf4a86ec846d8424f9f86a67fdbb8c52
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: New_Piskel_(6)_1
-      rect:
-        serializedVersion: 2
-        x: 1438
-        y: 2383
-        width: 267
-        height: 267
-      alignment: 9
-      pivot: {x: 0.4867021, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: d7d3a8eee2eaa51489994b8205a4a7a8
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: New_Piskel_(6)_2
-      rect:
-        serializedVersion: 2
-        x: 415
-        y: 1358
-        width: 267
-        height: 356
-      alignment: 9
-      pivot: {x: 0.4818337, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e6f92ca579579eb4282f091ed7ff2d19
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: New_Piskel_(6)_3
-      rect:
-        serializedVersion: 2
-        x: 1398
-        y: 1358
-        width: 307
-        height: 356
-      alignment: 9
-      pivot: {x: 0.55227154, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 964c97807b8819e499148e9517d253b9
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: New_Piskel_(6)_4
-      rect:
-        serializedVersion: 2
-        x: 343
-        y: 334
-        width: 339
-        height: 355
-      alignment: 9
-      pivot: {x: 0.5913338, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 23a1d14dbccf90a4b8635c75d2eb53b1
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: New_Piskel_(6)_5
-      rect:
-        serializedVersion: 2
-        x: 1150
-        y: 622
-        width: 27
-        height: 19
+        x: 23
+        y: 127
+        width: 26
+        height: 39
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -227,27 +106,147 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 999d880b2b11b2145813a585566cac6d
+      spriteID: f833860f0d095a04d91d9c23c84f2217
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: New_Piskel_(6)_6
+      name: gunrolling_1
       rect:
         serializedVersion: 2
-        x: 1337
-        y: 334
-        width: 368
-        height: 355
-      alignment: 9
-      pivot: {x: 0.62723875, y: 0}
+        x: 59
+        y: 129
+        width: 41
+        height: 31
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1ec5604365a62b848bcbd1391db49077
+      spriteID: e8e6eac1a19f0e04c950f7df0158d475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gunrolling_2
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 133
+        width: 39
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cdf1a1eaf7ba5b441824bae74d2baf48
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gunrolling_3
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 72
+        width: 31
+        height: 41
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fab7a83eb6a28643bd9621a54b7cc4f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gunrolling_4
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 72
+        width: 26
+        height: 39
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ca6964fb857536347a166ab5cfc4795f
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gunrolling_5
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 79
+        width: 41
+        height: 31
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a2bf939bec9b9a48b096fdc55abd9b1
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gunrolling_6
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 20
+        width: 39
+        height: 26
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a41fcb7dfd6ce649ac251cd62e73767
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: gunrolling_7
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 8
+        width: 31
+        height: 41
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 473abc23ffbfd174dacf8bbda00d4f52
       vertices: []
       indices: 
       edges: []
@@ -255,7 +254,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 57a5b988755d8f14db21fea994bccf91
+    spriteID: c87b0764e6d049a47bbae980278a4e79
     vertices: []
     indices: 
     edges: []

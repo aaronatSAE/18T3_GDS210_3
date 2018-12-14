@@ -1,14 +1,13 @@
 fileFormatVersion: 2
-guid: edbaf8561eb93094a8c59515124ad25d
+guid: 204b47d1dd8d2644f953c8480d6d9b52
 TextureImporter:
   fileIDToRecycleName:
-    21300000: New_Piskel_(6)_0
-    21300002: New_Piskel_(6)_1
-    21300004: New_Piskel_(6)_2
-    21300006: New_Piskel_(6)_3
-    21300008: New_Piskel_(6)_4
-    21300010: New_Piskel_(6)_5
-    21300012: New_Piskel_(6)_6
+    21300000: arnold crouching gun holster.png_0
+    21300002: arnold crouching gun holster.png_1
+    21300004: arnold crouching gun holster.png_2
+    21300006: arnold crouching gun holster.png_3
+    21300008: arnold crouching gun holster.png_4
+    21300010: arnold crouching gun holster.png_5
   externalObjects: {}
   serializedVersion: 7
   mipmaps:
@@ -52,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 308
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -87,167 +86,125 @@ TextureImporter:
     allowsAlphaSplitting: 0
     overridden: 0
     androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-  - serializedVersion: 2
-    buildTarget: Windows Store Apps
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: New_Piskel_(6)_0
+      name: arnold crouching gun holster.png_0
       rect:
         serializedVersion: 2
-        x: 415
-        y: 2383
-        width: 267
-        height: 235
+        x: 186
+        y: 150
+        width: 22
+        height: 39
       alignment: 9
-      pivot: {x: 0.48560485, y: 0}
+      pivot: {x: 0.4539982, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf4a86ec846d8424f9f86a67fdbb8c52
+      spriteID: f1f761a59badbaa4894752d2a201b54f
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: New_Piskel_(6)_1
+      name: arnold crouching gun holster.png_1
       rect:
         serializedVersion: 2
-        x: 1438
-        y: 2383
-        width: 267
-        height: 267
+        x: 296
+        y: 154
+        width: 26
+        height: 39
       alignment: 9
-      pivot: {x: 0.4867021, y: 0}
+      pivot: {x: 0.3867833, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d7d3a8eee2eaa51489994b8205a4a7a8
+      spriteID: 1e02a091c64f0744bae64fc1d907d98b
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: New_Piskel_(6)_2
+      name: arnold crouching gun holster.png_2
       rect:
         serializedVersion: 2
-        x: 415
-        y: 1358
-        width: 267
-        height: 356
+        x: 69
+        y: 95
+        width: 29
+        height: 39
       alignment: 9
-      pivot: {x: 0.4818337, y: 0}
+      pivot: {x: 0.34687674, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e6f92ca579579eb4282f091ed7ff2d19
+      spriteID: 7af706d039543ac4fba8dfe283af8070
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: New_Piskel_(6)_3
+      name: arnold crouching gun holster.png_3
       rect:
         serializedVersion: 2
-        x: 1398
-        y: 1358
-        width: 307
-        height: 356
+        x: 179
+        y: 94
+        width: 39
+        height: 39
       alignment: 9
-      pivot: {x: 0.55227154, y: 0}
+      pivot: {x: 0.25640008, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 964c97807b8819e499148e9517d253b9
+      spriteID: ef0e383bb4a663749a966bcf9c4f7970
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: New_Piskel_(6)_4
+      name: arnold crouching gun holster.png_4
       rect:
         serializedVersion: 2
-        x: 343
-        y: 334
-        width: 339
-        height: 355
+        x: 289
+        y: 94
+        width: 40
+        height: 39
       alignment: 9
-      pivot: {x: 0.5913338, y: 0}
+      pivot: {x: 0.2518837, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 23a1d14dbccf90a4b8635c75d2eb53b1
+      spriteID: 3df16fdd28b61cf49864b490082e0471
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: New_Piskel_(6)_5
+      name: arnold crouching gun holster.png_5
       rect:
         serializedVersion: 2
-        x: 1150
-        y: 622
-        width: 27
-        height: 19
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 999d880b2b11b2145813a585566cac6d
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: New_Piskel_(6)_6
-      rect:
-        serializedVersion: 2
-        x: 1337
-        y: 334
-        width: 368
-        height: 355
+        x: 64
+        y: 31
+        width: 43
+        height: 39
       alignment: 9
-      pivot: {x: 0.62723875, y: 0}
+      pivot: {x: 0.23382746, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1ec5604365a62b848bcbd1391db49077
+      spriteID: 9db80287dd4d6c5478afebe870c03a57
       vertices: []
       indices: 
       edges: []
@@ -255,7 +212,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 57a5b988755d8f14db21fea994bccf91
+    spriteID: d91aec30369b95043b825429945fb2da
     vertices: []
     indices: 
     edges: []

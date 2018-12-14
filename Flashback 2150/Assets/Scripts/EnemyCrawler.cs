@@ -63,6 +63,15 @@ public class EnemyCrawler : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
+        if (weaponOut == true)
+        {
+            GetComponent<Animator>().SetBool("Unholstered", true);
+        }
+        else
+        {
+            GetComponent<Animator>().SetBool("Unholstered", false);
+        }
+
         Vector3 right = transform.TransformDirection(Vector3.right);
         Vector3 left = transform.TransformDirection(Vector3.left);
 
