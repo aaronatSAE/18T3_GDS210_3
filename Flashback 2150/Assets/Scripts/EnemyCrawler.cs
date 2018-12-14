@@ -37,6 +37,8 @@ public class EnemyCrawler : MonoBehaviour {
     public float rSoundTimer;
     public float rSoundDelay;
 
+    public GameObject animations;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -65,11 +67,11 @@ public class EnemyCrawler : MonoBehaviour {
     {
         if (weaponOut == true)
         {
-            GetComponent<Animator>().SetBool("Unholstered", true);
+            animations.GetComponent<Animator>().SetBool("Unholstered", true);
         }
         else
         {
-            GetComponent<Animator>().SetBool("Unholstered", false);
+            animations.GetComponent<Animator>().SetBool("Unholstered", false);
         }
 
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -96,6 +98,8 @@ public class EnemyCrawler : MonoBehaviour {
             // Checks if target hit has "Player" tag.
             if (hitLeft.transform.tag == "Player")
             {
+                GetComponentInParent<Animator>().SetTrigger("turnLeft");
+                GetComponentInParent<Animator>().ResetTrigger("turnRight");
                 playerInvincible = hitLeft.transform.GetComponent<MovementScript>().invincible;
                 playerSeen = true;
 
@@ -160,6 +164,9 @@ public class EnemyCrawler : MonoBehaviour {
         {
             if (hitRight.transform.tag == "Player")
             {
+                GetComponentInParent<Animator>().ResetTrigger("turnLeft");
+                GetComponentInParent<Animator>().SetTrigger("turnRight");
+
                 playerInvincible = hitRight.transform.GetComponent<MovementScript>().invincible;
                 playerSeen = true;
 

@@ -26,4 +26,14 @@ public class SceneSwitcher : MonoBehaviour {
     {
         SceneManager.LoadScene("End Game Scene", LoadSceneMode.Additive);
     }
+
+    public void Play()
+    {
+        SceneManager.LoadScene("Level 1 Rotation Fix");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

@@ -206,6 +206,7 @@ public class MovementScript : MonoBehaviour
                         gunAim = false;
                         gunTimer = 0;
                         GetComponent<Animator>().SetTrigger("Stationary");
+                        GetComponent<Animator>().SetTrigger("Holster");
                         GetComponent<Animator>().ResetTrigger("GunMode");
 
                     }
@@ -216,6 +217,7 @@ public class MovementScript : MonoBehaviour
                         gunTimer = 0;
                         GetComponent<Animator>().SetTrigger("GunMode");
                         GetComponent<Animator>().SetTrigger("GunAim");
+                        GetComponent<Animator>().ResetTrigger("Holster");
                         GetComponent<Animator>().ResetTrigger("Stationary");
                     }
                 }
@@ -403,6 +405,7 @@ public class MovementScript : MonoBehaviour
                 // Allows the lookTime timer to work while in crouch mode.
                 lookTime += Time.deltaTime;
 
+                GetComponent<Animator>().ResetTrigger("Stand");
                 GetComponent<Animator>().SetTrigger("Crouch");
                 GetComponent<Animator>().ResetTrigger("Stationary");
 
@@ -425,6 +428,7 @@ public class MovementScript : MonoBehaviour
                 GetComponent<BoxCollider>().center = new Vector3(0f, 0f, 0f);
 
                 GetComponent<Animator>().ResetTrigger("Crouch");
+                GetComponent<Animator>().SetTrigger("Stand");
 
                 if (crouchToggle == true)
                 {
@@ -524,7 +528,7 @@ public class MovementScript : MonoBehaviour
                                 if (lookTime > crouchTurnDelay)
                                 {
                                     timeRolling = 0;
-                                    rollingRight = true;                                 
+                                    rollingRight = true;
                                 }
                             }
                         }
@@ -647,6 +651,9 @@ public class MovementScript : MonoBehaviour
                             // Running movement for left and right keys
                             if (Input.GetKey(KeyCode.D))
                             {
+                                GetComponent<Animator>().SetTrigger("Run");
+                                GetComponent<Animator>().ResetTrigger("Stationary");
+
                                 movementTimer += Time.deltaTime;
                                 if (movementTimer > runSoundDelay)
                                 {
@@ -660,8 +667,11 @@ public class MovementScript : MonoBehaviour
                                 rb.velocity = new Vector3(2f, -2f, 0);
                                 runTime += Time.deltaTime;
                             }
-                            if (Input.GetKey(KeyCode.A))
+                            else if (Input.GetKey(KeyCode.A))
                             {
+                                GetComponent<Animator>().SetTrigger("Run");
+                                GetComponent<Animator>().ResetTrigger("Stationary");
+
                                 movementTimer += Time.deltaTime;
                                 if (movementTimer > runSoundDelay)
                                 {
@@ -674,6 +684,11 @@ public class MovementScript : MonoBehaviour
                                 transform.Translate(Vector3.left * Time.deltaTime * runningSpeed);
                                 rb.velocity = new Vector3(-2f, -2f, 0);
                                 runTime += Time.deltaTime;
+                            }
+                            else
+                            {
+                                GetComponent<Animator>().ResetTrigger("Run");
+                                GetComponent<Animator>().SetTrigger("Stationary");
                             }
 
                             // Resets looktime for movement delay/animations
@@ -736,18 +751,16 @@ public class MovementScript : MonoBehaviour
                             }
                         }
 
-                        else
+                        else if (runningOn == false)
                         {
-                            GetComponent<Animator>().ResetTrigger("Walk");
                             GetComponent<Animator>().SetTrigger("Stationary");
+                            GetComponent<Animator>().ResetTrigger("Walk");
                         }
 
                         if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D))
-                        {                           
+                        {
                             lookTime = 0;
                         }
-
-
                     }
                 }
 
@@ -829,11 +842,11 @@ public class MovementScript : MonoBehaviour
                     {
                         if (animationTimer > jumpAnimationDelay)
                         {
-                        //rb.AddForce(new Vector3(0, sJumpHeight) * sJumpSpeed);
-                        //sJumpHeight value approx. = 0.075
+                            //rb.AddForce(new Vector3(0, sJumpHeight) * sJumpSpeed);
+                            //sJumpHeight value approx. = 0.075
 
-                        rb.velocity = new Vector3(0, sJumpHeight, 0);
-                        //sJumpHeight value approx. = 5
+                            rb.velocity = new Vector3(0, sJumpHeight, 0);
+                            //sJumpHeight value approx. = 5
                         }
                     }
                     // Dictates the jump height.
@@ -909,7 +922,7 @@ public class MovementScript : MonoBehaviour
         Vector3 down = transform.TransformDirection(Vector3.down) * 1.2f;
         Vector3 frontDown = new Vector3(transform.position.x + 0.4f, transform.position.y, transform.position.z);
         Vector3 backDown = new Vector3(transform.position.x - 0.4f, transform.position.y, transform.position.z);
-        Vector3 gunHeight = new Vector3(playerNose.transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        Vector3 gunHeight = new Vector3(playerNose.transform.position.x, transform.position.y - 0.5f, transform.position.z);
 
         Vector3 right = transform.TransformDirection(Vector3.right) * 15f;
         Vector3 left = transform.TransformDirection(Vector3.left) * 15f;
@@ -932,7 +945,7 @@ public class MovementScript : MonoBehaviour
 
         Vector3 center = GetComponent<BoxCollider>().center;
 
-        bool feetRay = crouchOn == false ? Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f) 
+        bool feetRay = crouchOn == false ? Physics.Raycast(transform.position, down, 1.2f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f)
             : Physics.Raycast(center, down, 1f) || Physics.Raycast(frontDown, down, 1.2f) || Physics.Raycast(backDown, down, 1.2f);
 
 
@@ -989,7 +1002,8 @@ public class MovementScript : MonoBehaviour
             if (shotDelay < gunTimer)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(gameObject.transform.position, lookLeft == true ? left * 15f : right * 15f, out hit))
+                if (Physics.Raycast(crouchOn == true ? gunHeight : gameObject.transform.position,
+                    lookLeft == true ? left * 15f : right * 15f, out hit))
                 {
                     Debug.Log(hit.transform.name);
                 }
@@ -997,14 +1011,14 @@ public class MovementScript : MonoBehaviour
                 int i = Random.Range(0, 2);
 
                 Animator enemyAnimations;
-                AudioSource.PlayClipAtPoint(gunShot[i], transform.position);
+                AudioSource.PlayClipAtPoint(gunShot[1], transform.position);
 
 
                 // playerAudioSource.Play(0);
 
                 if (hit.transform.tag == "Enemy" && hit.transform.GetComponent<EnemyRifleman>().enabled == true)
                 {
-                    enemyAnimations = hit.transform.gameObject.GetComponentInParent<Animator>();
+                    enemyAnimations = (hit.transform.gameObject.GetComponentInParent<EnemyRifleman>().enemyLook.GetComponent<Animator>());
 
                     hit.transform.GetComponent<EnemyRifleman>().enemyHurt.Play(0);
 
@@ -1073,6 +1087,7 @@ public class MovementScript : MonoBehaviour
                 crouchOn = !crouchOn;
                 gunTimer = 0;
                 gunAim = true;
+                GetComponent<Animator>().SetTrigger("GunAim");
             }
         }
 

@@ -165,7 +165,9 @@ public class EnemyRifleman : MonoBehaviour {
 
         // Series of timers that control transitions between the enemy idle state, gun out and gun aim states.
         if (playerSeen == true)
-        {    
+        {
+            GetComponent<Animator>().SetBool("gunPrime", true);
+
             if (delayTimer > delayDuration)
             {
                 if (weaponOut == false)
@@ -193,6 +195,8 @@ public class EnemyRifleman : MonoBehaviour {
         // Series of timers that reverses the above transitions. Gun aim > gun out > idle.
         if (playerSeen == false)
         {
+            GetComponent<Animator>().SetBool("gunPrime", true);
+
             if (delayTimer > delayDuration)
             {
                 if (weaponAim == true)
@@ -226,6 +230,8 @@ public class EnemyRifleman : MonoBehaviour {
             if (shootTimer > shootDelay)
             {
                 AudioSource.PlayClipAtPoint(shootSound, transform.position);
+
+                GetComponent<Animator>().SetTrigger("gunFire");
 
                 if (playerLeft == true)
                 {
@@ -268,10 +274,13 @@ public class EnemyRifleman : MonoBehaviour {
         if (lookLeft == true)
         {
             enemyLook.GetComponent<Animator>().SetBool("left?", true);
+            GetComponentInParent<Animator>().SetBool("left?", true);
         }
         else if (lookLeft == false)
         {
             enemyLook.GetComponent<Animator>().SetBool("left?", false);
+            GetComponentInParent<Animator>().SetBool("left?", false);
+
         }
     }
 }
